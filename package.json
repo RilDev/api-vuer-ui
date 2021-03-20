@@ -1,0 +1,23 @@
+{
+  "name": "vue-guide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "tailwindcss": "^2.0.4",
+    "vite": "^2.1.2"
+  },
+  "dependencies": {
+    "axios": "^0.20.0-0",
+    "lodash": "^4.17.21",
+    "vue": "^3.0.7"
+  }
+}

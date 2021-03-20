@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Vuer</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios@next"></script>
+    <script src="https://unpkg.com/lodash@4"></script>
+    <script src="https://unpkg.com/moment@2"></script>
+    <link rel="stylesheet" href="/style/tailwind.css" />
+  </head>
+  <body class="bg-gray-100 min-h-screen text-gray-800">
+    <div
+      id="app"
+      class="flex flex-col min-h-screen px-8 py-12 sm:h-screen sm:min-h-0 lg:max-w-6xl md:mx-auto"
+    >
+      <main
+        class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 items-stretch"
+      >
+        <section class="sm:flex sm:flex-col sm:overflow-hidden">
+          <header>
+            <app-title></app-title>
+          </header>
+          <search
+            :value="search"
+            :placeholder="placeholder"
+            @input="getResults"
+            @clear-search="clearSearch"
+          ></search>
+          <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
+            <robot-icon
+              :has-search="hasSearch"
+              :has-results="hasResults"
+              :is-searching="isSearching"
+            ></robot-icon>
+            <div>{{resultsPlaceholder}}</div>
+          </div>
+          <div class="hidden sm:mt-6 sm:block sm:flex-grow sm:overflow-hidden">
+            <div class="text-3xl text-center font-bold">Recent History</div>
+            <ul class="mt-4 h-full overflow-auto">
+              <li
+                v-for="i of 5"
+                class="bg-gray-50 mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative"
+              >
+                <span>test</span>
+                <span class="text-gray-400 pr-7">{{timeNow()}}</span>
+                <div
+                  title="Delete Log"
+                  class="absolute top-2 right-4 cursor-pointer"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                      d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+                    />
+                  </svg>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section class="overflow-auto">
+          <div
+            v-if="!hasResults"
+            class="mt-6 flex flex-col items-center sm:hidden"
+          >
+            <robot-icon
+              :has-search="hasSearch"
+              :has-results="hasResults"
+              :is-searching="isSearching"
+            ></robot-icon>
+            <div>{{resultsPlaceholder}}</div>
+          </div>
+          <results-list v-if="hasFavorites && !hasResults">
+            <result-item
+              v-for="(result, index) in favoriteResults"
+              :key="index"
+              :index="index"
+              :result="result"
+              :favorite-results="favoriteResults"
+              @delete-result="deleteResult"
+              @favorite-result="favoriteResult"
+            ></result-item>
+          </results-list>
+          <results-list v-if="hasResults">
+            <result-item
+              v-for="(result, index) in results"
+              :key="index"
+              :index="index"
+              :result="result"
+              :favorite-results="favoriteResults"
+              @delete-result="deleteResult"
+              @favorite-result="favoriteResult"
+            ></result-item>
+          </results-list>
+        </section>
+      </main>
+      <footer class="text-center mt-6">
+        <a href="https://rildev.website" target="_blank" class="text-blue-500"
+          >RilDev</a
+        >
+        &copy; 2021
+      </footer>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
