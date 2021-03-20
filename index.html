@@ -39,25 +39,17 @@
           </div>
           <div class="hidden sm:mt-6 sm:block sm:flex-grow sm:overflow-hidden">
             <div class="text-3xl text-center font-bold">Recent History</div>
-            <ul class="mt-4 h-full overflow-auto">
-              <li
-                v-for="i of 5"
-                class="bg-gray-50 mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative"
-              >
-                <span>test</span>
-                <span class="text-gray-400 pr-7">{{timeNow()}}</span>
-                <div
-                  title="Delete Log"
-                  class="absolute top-2 right-4 cursor-pointer"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24">
-                    <path
-                      d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
-                    />
-                  </svg>
-                </div>
-              </li>
+            <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
+              <history-log
+                v-for="(log, index) in searchHistory"
+                :log="log"
+                :index="index"
+                :key="index"
+                @load-history-log="loadHistoryLog"
+                @delete-history-log="deleteHistoryLog"
+              ></history-log>
             </ul>
+            <div v-else class="text-center text-gray-400 mt-4">No logs yet...</div>
           </div>
         </section>
         <section class="overflow-auto">

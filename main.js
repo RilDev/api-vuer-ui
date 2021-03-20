@@ -9,7 +9,9 @@ const App = {
       hasResults: false,
       hasFavorites: false,
       isSearching: false,
+      isHistoryLog: false,
       favoriteResults: [],
+      searchHistory: [],
     };
   },
   watch: {
@@ -25,6 +27,17 @@ const App = {
         this.hasResults = false;
       } else {
         this.hasResults = true;
+      }
+
+      // save result in search history
+      // don't save if the search is empty
+      if (this.hasSearch && !this.isHistoryLog) {
+        this.searchHistory.unshift({
+          search: this.search,
+          result: this.results,
+          date: this.timeNow(),
+        });
+        this.updateLocalStorage();
       }
     },
     favoriteResults() {
@@ -42,6 +55,9 @@ const App = {
       /* debounce to avoid GET at every key stroke */
       // update input search value
       this.search = event.target.value;
+
+      // reset isHistoryLog
+      this.isHistoryLog = false;
 
       // if search is not empty, GET API response
       if (this.search !== "") {
@@ -65,6 +81,8 @@ const App = {
     clearSearch() {
       this.search = "";
       this.results = [];
+      // reset isHistoryLog
+      this.isHistoryLog = false;
     },
     deleteResult(index) {
       // when click on delete, remove corresponding result
@@ -75,18 +93,42 @@ const App = {
       // when click on delete, remove corresponding result
       this.favoriteResults = [...this.favoriteResults, this.results[index]];
     },
+    loadHistoryLog(log) {
+      this.search = log.search;
+      this.results = log.result;
+      this.isHistoryLog = true;
+    },
+    deleteHistoryLog(index) {
+      // when click on delete, remove corresponding result
+      this.searchHistory.splice(index, 1);
+      this.updateLocalStorage();
+    },
     updateLocalStorage() {
+      // update favorite results
       localStorage.setItem(
         "favorite-results",
         JSON.stringify(this.favoriteResults)
       );
+
+      // update search history
+      // limit the array length to 20 items
+      const slicedArray = this.searchHistory.slice(0, 20);
+      localStorage.setItem("search-history", JSON.stringify(slicedArray));
     },
     timeNow() {
-      return moment().format('MMMM Do YYYY, h:mm:ss a');
-    }
+      return moment().format("MMMM Do YYYY, h:mm:ss a");
+    },
   },
   computed: {
     resultsPlaceholder() {
+      // load history log
+      if (this.isHistoryLog && this.hasResults) {
+        return "Data retrieved from memory!";
+      }
+      // load history log with no resutls search
+      if (this.isHistoryLog && !this.hasResults) {
+        return "That one was a bad one!";
+      }
       // no search yet
       if (!this.hasSearch) {
         return "Awaiting search request!";
@@ -111,6 +153,11 @@ const App = {
       localStorage.setItem("favorite-results", JSON.stringify([]));
     }
     this.favoriteResults = JSON.parse(localStorage.getItem("favorite-results"));
+
+    if (localStorage.getItem("search-history") === null) {
+      localStorage.setItem("search-history", JSON.stringify([]));
+    }
+    this.searchHistory = JSON.parse(localStorage.getItem("search-history"));
   },
 };
 
@@ -128,7 +175,7 @@ app.component("app-title", {
 });
 
 app.component("search", {
-  props: ['value', 'placeholder'],
+  props: ["value", "placeholder"],
   emits: ["clearSearch"],
   template: /*html*/ `
   <div class="mt-6 text-center">
@@ -261,6 +308,51 @@ app.component("robot-icon", {
       :d="this.robotState"
     />
   </svg>
+  `,
+});
+
+app.component("history-log", {
+  props: ["log", "index"],
+  emits: ["loadHistoryLog", "deleteHistoryLog"],
+  computed: {
+    containerTitle() {
+      return this.log.result.length > 0 ? "Load Log" : "";
+    },
+    classesContainer() {
+      return {
+        "bg-gray-50": this.log.result.length > 0,
+        "hover:bg-gray-100": this.log.result.length > 0,
+        "bg-gray-200": this.log.result.length === 0,
+        "cursor-pointer": this.log.result.length > 0,
+      };
+    },
+    classesSearch() {
+      return {
+        "line-through": this.log.result.length === 0,
+      };
+    },
+  },
+  template: /*html*/ `
+  <li
+    :title="containerTitle"
+    :class="classesContainer"
+    class="mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative"
+    @click="$emit('loadHistoryLog', log)"
+  >
+    <span :class="classesSearch">{{log.search}}</span>
+    <span class="text-gray-400 pr-7">{{log.date}}</span>
+    <div
+      title="Delete Log"
+      class="absolute top-2 right-4 cursor-pointer"
+      @click="$emit('deleteHistoryLog', index)"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24">
+        <path
+          d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+        />
+      </svg>
+    </div>
+  </li>
   `,
 });
 
