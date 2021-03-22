@@ -1,25 +1,25 @@
 export const HistoryLog = {
-    props: ["log", "index"],
-    emits: ["loadHistoryLog", "deleteHistoryLog"],
-    computed: {
-      containerTitle() {
-        return this.log.results.length > 0 ? "Load Log" : "";
-      },
-      classesContainer() {
-        return {
-          "bg-gray-50": this.log.results.length > 0,
-          "hover:bg-gray-100": this.log.results.length > 0,
-          "bg-gray-200": this.log.results.length === 0,
-          "cursor-pointer": this.log.results.length > 0,
-        };
-      },
-      classesSearch() {
-        return {
-          "line-through": this.log.results.length === 0,
-        };
-      },
+  props: { log: Object, index: Number },
+  emits: ["loadHistoryLog", "deleteHistoryLog"],
+  computed: {
+    containerTitle() {
+      return this.log.results.length > 0 ? "Load Log" : "";
     },
-    template: /*html*/ `
+    classesContainer() {
+      return {
+        "bg-gray-50": this.log.results.length > 0,
+        "hover:bg-gray-100": this.log.results.length > 0,
+        "bg-gray-200": this.log.results.length === 0,
+        "cursor-pointer": this.log.results.length > 0,
+      };
+    },
+    classesSearch() {
+      return {
+        "line-through": this.log.results.length === 0,
+      };
+    },
+  },
+  template: /*html*/ `
     <li
       :title="containerTitle"
       :class="classesContainer"
@@ -41,4 +41,4 @@ export const HistoryLog = {
       </div>
     </li>
     `,
-  }
+};
