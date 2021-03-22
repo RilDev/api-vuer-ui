@@ -119,10 +119,6 @@ const App = {
       this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
     },
     removeFromFavorites(index) {
-      console.log(
-        "🚀 ~ file: main.js ~ line 124 ~ removeFromFavorites ~ index",
-        index
-      );
       // when click on delete, remove corresponding result
       this.favoriteResults.splice(index, 1);
       // force state update
@@ -295,14 +291,6 @@ app.component("result-item", {
     },
     computedFavoriteIndex() {
       for (const [index, result] of this.favoriteResults.entries()) {
-        console.log(
-          "🚀 ~ file: main.js ~ line 298 ~ computedFavoriteIndex ~ [index, result]",
-          [index, result]
-        );
-        console.log(
-          "🚀 ~ file: main.js ~ line 302 ~ computedFavoriteIndex ~ this.hasSearch",
-          this.hasSearch
-        );
         // if the favorite is viewed from the favorite list, then send the current index
         // else, send calculated value corresponding to the index in the favoriteResults array
         if (!this.hasSearch) {
