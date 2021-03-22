@@ -11,6 +11,7 @@ import { RobotIcon } from "./components/RobotIcon";
 import { ResultsList } from "./components/ResultsList";
 import { ResultItem } from "./components/ResultItem";
 import { HistoryLog } from "./components/HistoryLog";
+import { Footer } from "./components/Footer";
 
 // bootstrap app
 const App = {
@@ -221,6 +222,7 @@ const App = {
     ResultsList,
     ResultItem,
     HistoryLog,
+    Footer,
   },
   template: /*html*/ `
   <main
@@ -361,13 +363,7 @@ const App = {
           </ResultsList>
         </section>
       </main>
-      <footer class="flex items-center justify-center h-16">
-        <span>
-          <a href="https://rildev.website" target="_blank" class="text-blue-500"
-            >RilDev</a
-          > &copy; 2021
-        </span>
-      </footer>
+      <Footer></Footer>
   `,
 };
 
