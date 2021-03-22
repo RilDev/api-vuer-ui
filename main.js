@@ -5,6 +5,7 @@
 
 // import components
 import { Title } from "./components/Title";
+import { SearchBlock } from "./components/SearchBlock";
 
 // bootstrap app
 const App = {
@@ -218,7 +219,7 @@ const App = {
           <header>
             <Title></Title>
           </header>
-          <search-block>
+          <SearchBlock>
             <search-input
               :value="search"
               :placeholder="placeholder"
@@ -228,7 +229,7 @@ const App = {
               @input="getResults"
               @clear-search="clearSearch"
             ></search-input>
-          </search-block>
+          </SearchBlock>
           <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
             <robot-icon
               :has-search="hasSearch"
@@ -362,16 +363,6 @@ const App = {
 const app = Vue.createApp(App);
 
 // create global components
-
-app.component("search-block", {
-  template: /*html*/ `
-  <div class="mt-6 text-center">
-    <div class="text-lg">Do you have an API about:</div>
-    <slot></slot>
-  </div>
-  `,
-});
-
 app.component("search-input", {
   props: ["value", "placeholder", "reference"],
   emits: ["clearSearch"],
