@@ -9,6 +9,7 @@ import { SearchBlock } from "./components/SearchBlock";
 import { SearchInput } from "./components/SearchInput";
 import { RobotIcon } from "./components/RobotIcon";
 import { ResultItem } from "./components/ResultItem";
+import { HistoryLog } from "./components/HistoryLog";
 
 // bootstrap app
 const App = {
@@ -217,6 +218,7 @@ const App = {
     SearchInput,
     RobotIcon,
     ResultItem,
+    HistoryLog
   },
   template: /*html*/ `
   <main
@@ -250,14 +252,14 @@ const App = {
           >
             <div class="text-3xl text-center font-bold">Recent History</div>
             <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
-              <history-log
+              <HistoryLog
                 v-for="(log, index) in searchHistory"
                 :log="log"
                 :index="index"
                 :key="index"
                 @load-history-log="loadHistoryLog"
                 @delete-history-log="deleteHistoryLog"
-              ></history-log>
+              ></HistoryLog>
             </ul>
             <div v-else class="text-center text-gray-400 mt-4">
               No logs yet...
@@ -323,12 +325,12 @@ const App = {
               4) Load previous searches by clicking an history log
             </div>
             <ul>
-              <history-log
+              <HistoryLog
                 :log="tutorialHistoryLog"
                 :index="-1"
                 @load-history-log="loadHistoryLog"
                 @delete-history-log="deleteHistoryLog"
-              ></history-log>
+              ></HistoryLog>
             </ul>
           </div>
           <results-list v-if="hasFavorites && !hasResults">
@@ -376,51 +378,6 @@ app.component("results-list", {
   <ul class="mt-6 sm:mt-0">
     <slot></slot>
   </ul>
-  `,
-});
-
-app.component("history-log", {
-  props: ["log", "index"],
-  emits: ["loadHistoryLog", "deleteHistoryLog"],
-  computed: {
-    containerTitle() {
-      return this.log.results.length > 0 ? "Load Log" : "";
-    },
-    classesContainer() {
-      return {
-        "bg-gray-50": this.log.results.length > 0,
-        "hover:bg-gray-100": this.log.results.length > 0,
-        "bg-gray-200": this.log.results.length === 0,
-        "cursor-pointer": this.log.results.length > 0,
-      };
-    },
-    classesSearch() {
-      return {
-        "line-through": this.log.results.length === 0,
-      };
-    },
-  },
-  template: /*html*/ `
-  <li
-    :title="containerTitle"
-    :class="classesContainer"
-    class="mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative transition"
-    @click="$emit('loadHistoryLog', log)"
-  >
-    <span :class="classesSearch">{{log.search}}</span>
-    <span class="text-gray-400 pr-7">{{log.date}}</span>
-    <div
-      title="Delete Log"
-      class="absolute top-2 right-4 cursor-pointer"
-      @click.stop="$emit('deleteHistoryLog', index)"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <path
-          d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
-        />
-      </svg>
-    </div>
-  </li>
   `,
 });
 
