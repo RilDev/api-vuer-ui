@@ -14,10 +14,10 @@
   <body class="bg-gray-100 min-h-screen text-gray-800">
     <div
       id="app"
-      class="flex flex-col min-h-screen px-8 py-12 sm:h-screen sm:min-h-0 lg:max-w-6xl md:mx-auto"
+      class="px-8 py-12 min-h-screen flex flex-col pb-0 sm:h-screen sm:grid sm:grid-cols-1 sm:grid-rows-layout sm:overflow-hidden"
     >
       <main
-        class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 items-stretch"
+        class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 sm:items-stretch"
       >
         <section class="sm:flex sm:flex-col sm:overflow-hidden">
           <header>
@@ -37,7 +37,7 @@
             ></robot-icon>
             <div>{{resultsPlaceholder}}</div>
           </div>
-          <div class="hidden sm:mt-6 sm:block sm:flex-grow sm:overflow-hidden">
+          <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:flex-grow sm:overflow-hidden">
             <div class="text-3xl text-center font-bold">Recent History</div>
             <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
               <history-log
@@ -49,7 +49,9 @@
                 @delete-history-log="deleteHistoryLog"
               ></history-log>
             </ul>
-            <div v-else class="text-center text-gray-400 mt-4">No logs yet...</div>
+            <div v-else class="text-center text-gray-400 mt-4">
+              No logs yet...
+            </div>
           </div>
         </section>
         <section class="overflow-auto">
@@ -88,13 +90,13 @@
           </results-list>
         </section>
       </main>
-      <footer class="text-center mt-6">
+      <footer class="flex items-center justify-center h-16">
         <a href="https://rildev.website" target="_blank" class="text-blue-500"
           >RilDev</a
         >
         &copy; 2021
       </footer>
     </div>
-    <script src="main.js"></script>
+    <script type="module" src="/main.js"></script>
   </body>
 </html>

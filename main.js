@@ -1,3 +1,8 @@
+// import { createApp } from "vue";
+// import axios from "axios";
+// import _ from "lodash";
+// import moment from "moment";
+
 // bootstrap app
 const App = {
   data() {
@@ -195,7 +200,7 @@ app.component("search", {
 
 app.component("results-list", {
   template: /*html*/ `
-  <ul class="mt-6 w-full sm:mt-0">
+  <ul class="mt-6 sm:mt-0">
     <slot></slot>
   </ul>
   `,
@@ -246,7 +251,7 @@ app.component("result-item", {
     },
   },
   template: /*html*/ `
-  <li :class="classes" class="mb-3 p-4 rounded-md shadow-md sm:mb-5">
+  <li :class="classes" class="mb-3 px-5 py-4 rounded-md shadow-md sm:mb-5">
     <div class="flex flex-wrap space-x-1">
       <div class="text-xl font-bold">{{result.API}}</div>
       <span v-html="authIcon" v-if="computedIsAuth" title="API Key Required"></span>
@@ -256,8 +261,8 @@ app.component("result-item", {
     <div class="mt-2 text-gray-800">{{result.Description}}</div>
     <div class="flex mt-2"><span v-html="linkIcon" class="mr-1"></span> <a :href="result.Link" target="_blank" class="text-blue-500 break-all">{{result.Link}}</a></div>
     <div class="flex justify-end">
-    <button v-if="!computedIsFavorite" @click="$emit('favoriteResult', index)" class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md">add to favorite</button>
-    <button v-else @click="$emit('deleteResult', index)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md">remove from favorite</button>
+    <button v-if="!computedIsFavorite" @click="$emit('favoriteResult', index)" class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">add to favorite</button>
+    <button v-else @click="$emit('deleteResult', index)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">remove from favorite</button>
     </div>
   </li>
   `,
@@ -336,7 +341,7 @@ app.component("history-log", {
   <li
     :title="containerTitle"
     :class="classesContainer"
-    class="mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative"
+    class="mb-2 px-5 py-2 rounded-md shadow-md flex justify-between relative transition"
     @click="$emit('loadHistoryLog', log)"
   >
     <span :class="classesSearch">{{log.search}}</span>
@@ -344,7 +349,7 @@ app.component("history-log", {
     <div
       title="Delete Log"
       class="absolute top-2 right-4 cursor-pointer"
-      @click="$emit('deleteHistoryLog', index)"
+      @click.stop="$emit('deleteHistoryLog', index)"
     >
       <svg width="24" height="24" viewBox="0 0 24 24">
         <path
