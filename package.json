@@ -4,7 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "keywords": [],
   "author": "",
@@ -13,11 +15,12 @@
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.8",
     "tailwindcss": "^2.0.4",
-    "vite": "^2.1.2"
+    "vite": "^2.1.0"
   },
   "dependencies": {
     "axios": "^0.20.0-0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "vue": "^3.0.7"
   }
 }
