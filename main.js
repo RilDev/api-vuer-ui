@@ -234,12 +234,12 @@ const App = {
           </header>
           <SearchBlock>
             <SearchInput
-              :value="search"
+              v-model:value="search"
               :placeholder="placeholder"
               ref="search-input-1"
               reference="search-input-1"
               :has-search="hasSearch"
-              @input="getResults"
+              @getResults="getResults"
               @clearSearch="clearSearch"
             ></SearchInput>
           </SearchBlock>
@@ -286,11 +286,11 @@ const App = {
             <div class="text-center text-3xl font-bold mb-4">Tutorial</div>
             <div class="text-lg">1) Enter your search in the search input</div>
             <SearchInput
-              :value="search"
+              v-model:value="search"
               :placeholder="placeholder"
               ref="search-input-2"
               reference="search-input-2"
-              @input="getResults"
+              @getResults="getResults"
               @clearSearch="clearSearch"
             ></SearchInput>
             <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
@@ -318,11 +318,11 @@ const App = {
               </svg>
             </div>
             <SearchInput
-              :value="search"
+              v-model:value="search"
               :placeholder="placeholder"
               ref="search-input-3"
               reference="search-input-3"
-              @input="getResults"
+              @getResults="getResults"
               @clearSearch="clearSearch"
             ></SearchInput>
             <div class="text-lg my-3">
