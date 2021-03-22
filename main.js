@@ -112,15 +112,17 @@ const App = {
     clearSearch(reference) {
       this.search = "";
       this.results = [];
-      this.hasSearch = false;
-      this.hasResults = false;
       // reset isHistoryLog
       this.isHistoryLog = false;
 
       // focus on the clicked input
       this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
     },
-    deleteResult(index) {
+    removeFromFavorites(index) {
+      console.log(
+        "🚀 ~ file: main.js ~ line 124 ~ removeFromFavorites ~ index",
+        index
+      );
       // when click on delete, remove corresponding result
       this.favoriteResults.splice(index, 1);
       // force state update
@@ -255,8 +257,8 @@ app.component("results-list", {
 });
 
 app.component("result-item", {
-  props: ["index", "result", "favoriteResults"],
-  emits: ["deleteResult", "favoriteResult"],
+  props: ["index", "result", "favoriteResults", "hasSearch"],
+  emits: ["removeFromFavorites", "favoriteResult"],
   data() {
     return {
       linkIcon:
@@ -291,6 +293,27 @@ app.component("result-item", {
       }
       return false;
     },
+    computedFavoriteIndex() {
+      for (const [index, result] of this.favoriteResults.entries()) {
+        console.log(
+          "🚀 ~ file: main.js ~ line 298 ~ computedFavoriteIndex ~ [index, result]",
+          [index, result]
+        );
+        console.log(
+          "🚀 ~ file: main.js ~ line 302 ~ computedFavoriteIndex ~ this.hasSearch",
+          this.hasSearch
+        );
+        // if the favorite is viewed from the favorite list, then send the current index
+        // else, send calculated value corresponding to the index in the favoriteResults array
+        if (!this.hasSearch) {
+          return this.index;
+        } else {
+          if (result.Link === this.result.Link) {
+            return index;
+          }
+        }
+      }
+    },
     classes() {
       return {
         "bg-green-50": this.computedIsFavorite,
@@ -310,7 +333,7 @@ app.component("result-item", {
     <div class="flex mt-2"><span v-html="linkIcon" class="mr-1"></span> <a :href="result.Link" target="_blank" class="text-blue-500 break-all">{{result.Link}}</a></div>
     <div class="flex justify-end">
     <button v-if="!computedIsFavorite" @click="$emit('favoriteResult', index)" class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">add to favorite</button>
-    <button v-else @click="$emit('deleteResult', index)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">remove from favorite</button>
+    <button v-else @click="$emit('removeFromFavorites', computedFavoriteIndex)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">remove from favorite</button>
     </div>
   </li>
   `,

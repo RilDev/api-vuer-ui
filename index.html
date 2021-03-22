@@ -29,6 +29,7 @@
               :placeholder="placeholder"
               ref="search-input-1"
               reference="search-input-1"
+              :has-search="hasSearch"
               @input="getResults"
               @clear-search="clearSearch"
             ></search-input>
@@ -89,7 +90,8 @@
                 :index="-1"
                 :result="tutorialResult"
                 :favorite-results="favoriteResults"
-                @delete-result="deleteResult"
+                :has-search="hasSearch"
+                @remove-from-favorites="removeFromFavorites"
                 @favorite-result="favoriteResult"
               ></result-item>
             </ul>
@@ -133,7 +135,8 @@
               :index="index"
               :result="result"
               :favorite-results="favoriteResults"
-              @delete-result="deleteResult"
+              :has-search="hasSearch"
+              @remove-from-favorites="removeFromFavorites"
               @favorite-result="favoriteResult"
             ></result-item>
           </results-list>
@@ -144,7 +147,8 @@
               :index="index"
               :result="result"
               :favorite-results="favoriteResults"
-              @delete-result="deleteResult"
+              :has-search="hasSearch"
+              @remove-from-favorites="removeFromFavorites"
               @favorite-result="favoriteResult"
             ></result-item>
           </results-list>
