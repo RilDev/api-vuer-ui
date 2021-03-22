@@ -3,6 +3,9 @@
 // import _ from "lodash";
 // import moment from "moment";
 
+// import components
+import { Title } from "./components/Title";
+
 // bootstrap app
 const App = {
   data() {
@@ -204,13 +207,16 @@ const App = {
     }
     this.searchHistory = JSON.parse(localStorage.getItem("search-history"));
   },
+  components: {
+    Title,
+  },
   template: /*html*/ `
   <main
         class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 sm:items-stretch"
       >
         <section class="sm:flex sm:flex-col sm:overflow-hidden">
           <header>
-            <app-title></app-title>
+            <Title></Title>
           </header>
           <search-block>
             <search-input
@@ -350,21 +356,12 @@ const App = {
           > &copy; 2021
         </span>
       </footer>
-  `
+  `,
 };
 
 const app = Vue.createApp(App);
 
 // create global components
-app.component("app-title", {
-  template: /*html*/ `
-  <h1 class="text-4xl text-center text-blue-500 font-bold">API Vuer</h1>
-  <div class="text-center">
-    Powered by
-    <a href="https://api.publicapis.org/" target="_blank" class="text-blue-500">Public APIs</a>
-  </div>
-  `,
-});
 
 app.component("search-block", {
   template: /*html*/ `
