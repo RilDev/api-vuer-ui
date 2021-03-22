@@ -6,6 +6,7 @@
 // import components
 import { Title } from "./components/Title";
 import { SearchBlock } from "./components/SearchBlock";
+import { SearchInput } from "./components/SearchInput";
 
 // bootstrap app
 const App = {
@@ -211,6 +212,7 @@ const App = {
   components: {
     Title,
     SearchBlock,
+    SearchInput,
   },
   template: /*html*/ `
   <main
@@ -221,7 +223,7 @@ const App = {
             <Title></Title>
           </header>
           <SearchBlock>
-            <search-input
+            <SearchInput
               :value="search"
               :placeholder="placeholder"
               ref="search-input-1"
@@ -229,7 +231,7 @@ const App = {
               :has-search="hasSearch"
               @input="getResults"
               @clear-search="clearSearch"
-            ></search-input>
+            ></SearchInput>
           </SearchBlock>
           <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
             <robot-icon
@@ -273,14 +275,14 @@ const App = {
           <div v-if="!hasFavorites && !hasResults" class="mt-6 sm:mt-0">
             <div class="text-center text-3xl font-bold mb-4">Tutorial</div>
             <div class="text-lg">1) Enter your search in the search input</div>
-            <search-input
+            <SearchInput
               :value="search"
               :placeholder="placeholder"
               ref="search-input-2"
               reference="search-input-2"
               @input="getResults"
               @clear-search="clearSearch"
-            ></search-input>
+            ></SearchInput>
             <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
             <ul>
               <result-item
@@ -305,14 +307,14 @@ const App = {
                 />
               </svg>
             </div>
-            <search-input
+            <SearchInput
               :value="search"
               :placeholder="placeholder"
               ref="search-input-3"
               reference="search-input-3"
               @input="getResults"
               @clear-search="clearSearch"
-            ></search-input>
+            ></SearchInput>
             <div class="text-lg my-3">
               4) Load previous searches by clicking an history log
             </div>
@@ -364,21 +366,6 @@ const App = {
 const app = Vue.createApp(App);
 
 // create global components
-app.component("search-input", {
-  props: ["value", "placeholder", "reference"],
-  emits: ["clearSearch"],
-  template: /*html*/ `
-  <div class="relative">
-    <input
-    type="text"
-    :placeholder="placeholder"
-    :value="value"
-    class="rounded-md border-gray-900 mt-3 px-5 py-3 shadow-sm w-full focus:outline-none"
-    />
-    <div @click="$emit('clearSearch', reference)" title="Clear Search" class="absolute top-6 right-4 cursor-pointer"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg></div>
-  </div>
-  `,
-});
 
 app.component("results-list", {
   template: /*html*/ `
