@@ -17,6 +17,32 @@ const App = {
       isHistoryLog: false,
       favoriteResults: [],
       searchHistory: [],
+      tutorialResult: {
+        API: "Lingua Robot",
+        Description:
+          "Word definitions, pronunciations, synonyms, antonyms and others",
+        Auth: "apiKey",
+        HTTPS: true,
+        Cors: "yes",
+        Link: "https://www.linguarobot.io",
+        Category: "Dictionaries",
+      },
+      tutorialHistoryLog: {
+        search: "robot",
+        results: [
+          {
+            API: "Lingua Robot",
+            Description:
+              "Word definitions, pronunciations, synonyms, antonyms and others",
+            Auth: "apiKey",
+            HTTPS: true,
+            Cors: "yes",
+            Link: "https://www.linguarobot.io",
+            Category: "Dictionaries",
+          },
+        ],
+        date: "March 22nd 2021, 2:14:38 pm",
+      },
     };
   },
   watch: {
@@ -39,7 +65,7 @@ const App = {
       if (this.hasSearch && !this.isHistoryLog) {
         this.searchHistory.unshift({
           search: this.search,
-          result: this.results,
+          results: this.results,
           date: this.timeNow(),
         });
         this.updateLocalStorage();
@@ -83,30 +109,46 @@ const App = {
         this.results = [];
       }
     }, 300),
-    clearSearch() {
+    clearSearch(reference) {
       this.search = "";
       this.results = [];
+      this.hasSearch = false;
+      this.hasResults = false;
       // reset isHistoryLog
       this.isHistoryLog = false;
+
+      // focus on the clicked input
+      this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
     },
     deleteResult(index) {
       // when click on delete, remove corresponding result
       this.favoriteResults.splice(index, 1);
-      this.updateLocalStorage();
+      // force state update
+      this.favoriteResults = [...this.favoriteResults];
     },
     favoriteResult(index) {
-      // when click on delete, remove corresponding result
-      this.favoriteResults = [...this.favoriteResults, this.results[index]];
+      // when click on add, add corresponding result to favorites
+      // if index is -1, then it is the tutorial's example
+      if (index === -1) {
+        this.favoriteResults = [this.tutorialResult];
+        // force state update
+        this.favoriteResults = [...this.favoriteResults];
+      } else {
+        this.favoriteResults = [...this.favoriteResults, this.results[index]];
+      }
     },
     loadHistoryLog(log) {
       this.search = log.search;
-      this.results = log.result;
+      this.results = log.results;
       this.isHistoryLog = true;
     },
     deleteHistoryLog(index) {
       // when click on delete, remove corresponding result
-      this.searchHistory.splice(index, 1);
-      this.updateLocalStorage();
+      // if index = -1, it is the tutorial history log
+      if (index !== -1) {
+        this.searchHistory.splice(index, 1);
+        this.updateLocalStorage();
+      }
     },
     updateLocalStorage() {
       // update favorite results
@@ -179,21 +221,27 @@ app.component("app-title", {
   `,
 });
 
-app.component("search", {
-  props: ["value", "placeholder"],
-  emits: ["clearSearch"],
+app.component("search-block", {
   template: /*html*/ `
   <div class="mt-6 text-center">
     <div class="text-lg">Do you have an API about:</div>
-    <div class="relative">
-      <input
-      type="text"
-      :placeholder="placeholder"
-      :value="value"
-      class="rounded-md border-gray-900 mt-3 px-5 py-3 shadow-sm w-full"
-      />
-      <div @click="$emit('clear-search')" title="Clear Search" class="absolute top-6 right-4 cursor-pointer"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg></div>
-    </div>
+    <slot></slot>
+  </div>
+  `,
+});
+
+app.component("search-input", {
+  props: ["value", "placeholder", "reference"],
+  emits: ["clearSearch"],
+  template: /*html*/ `
+  <div class="relative">
+    <input
+    type="text"
+    :placeholder="placeholder"
+    :value="value"
+    class="rounded-md border-gray-900 mt-3 px-5 py-3 shadow-sm w-full focus:outline-none"
+    />
+    <div @click="$emit('clearSearch', reference)" title="Clear Search" class="absolute top-6 right-4 cursor-pointer"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg></div>
   </div>
   `,
 });
@@ -321,19 +369,19 @@ app.component("history-log", {
   emits: ["loadHistoryLog", "deleteHistoryLog"],
   computed: {
     containerTitle() {
-      return this.log.result.length > 0 ? "Load Log" : "";
+      return this.log.results.length > 0 ? "Load Log" : "";
     },
     classesContainer() {
       return {
-        "bg-gray-50": this.log.result.length > 0,
-        "hover:bg-gray-100": this.log.result.length > 0,
-        "bg-gray-200": this.log.result.length === 0,
-        "cursor-pointer": this.log.result.length > 0,
+        "bg-gray-50": this.log.results.length > 0,
+        "hover:bg-gray-100": this.log.results.length > 0,
+        "bg-gray-200": this.log.results.length === 0,
+        "cursor-pointer": this.log.results.length > 0,
       };
     },
     classesSearch() {
       return {
-        "line-through": this.log.result.length === 0,
+        "line-through": this.log.results.length === 0,
       };
     },
   },
