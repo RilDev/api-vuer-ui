@@ -1,5 +1,5 @@
 export const RobotIcon = {
-  props: ["hasSearch", "isSearching", "hasResults"],
+  props: { hasSearch: Boolean, isSearching: Boolean, hasResults: Boolean },
   data() {
     return {
       robotNoSearch:
