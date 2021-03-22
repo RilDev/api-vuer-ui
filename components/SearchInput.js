@@ -1,5 +1,5 @@
 export const SearchInput = {
-  props: ["value", "placeholder", "reference"],
+  props: { value: String, placeholder: String, reference: String },
   emits: ["clearSearch"],
   template: /*html*/ `
     <div class="relative">
