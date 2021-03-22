@@ -210,6 +210,7 @@ const App = {
   },
   components: {
     Title,
+    SearchBlock,
   },
   template: /*html*/ `
   <main
