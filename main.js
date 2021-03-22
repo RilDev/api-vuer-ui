@@ -267,11 +267,11 @@ const App = {
             v-if="!hasResults"
             class="mt-6 flex flex-col items-center sm:hidden"
           >
-            <robot-icon
+            <RobotIcon
               :has-search="hasSearch"
               :has-results="hasResults"
               :is-searching="isSearching"
-            ></robot-icon>
+            ></RobotIcon>
             <div>{{resultsPlaceholder}}</div>
           </div>
           <div v-if="!hasFavorites && !hasResults" class="mt-6 sm:mt-0">
