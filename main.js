@@ -8,6 +8,7 @@ import { Title } from "./components/Title";
 import { SearchBlock } from "./components/SearchBlock";
 import { SearchInput } from "./components/SearchInput";
 import { RobotIcon } from "./components/RobotIcon";
+import { ResultsList } from "./components/ResultsList";
 import { ResultItem } from "./components/ResultItem";
 import { HistoryLog } from "./components/HistoryLog";
 
@@ -217,8 +218,9 @@ const App = {
     SearchBlock,
     SearchInput,
     RobotIcon,
+    ResultsList,
     ResultItem,
-    HistoryLog
+    HistoryLog,
   },
   template: /*html*/ `
   <main
@@ -333,7 +335,7 @@ const App = {
               ></HistoryLog>
             </ul>
           </div>
-          <results-list v-if="hasFavorites && !hasResults">
+          <ResultsList v-if="hasFavorites && !hasResults">
             <ResultItem
               v-for="(result, index) in favoriteResults"
               :key="index"
@@ -344,8 +346,8 @@ const App = {
               @remove-from-favorites="removeFromFavorites"
               @add-to-favorites="addToFavorites"
             ></ResultItem>
-          </results-list>
-          <results-list v-if="hasResults">
+          </ResultsList>
+          <ResultsList v-if="hasResults">
             <ResultItem
               v-for="(result, index) in results"
               :key="index"
@@ -356,7 +358,7 @@ const App = {
               @remove-from-favorites="removeFromFavorites"
               @add-to-favorites="addToFavorites"
             ></ResultItem>
-          </results-list>
+          </ResultsList>
         </section>
       </main>
       <footer class="flex items-center justify-center h-16">
@@ -370,16 +372,6 @@ const App = {
 };
 
 const app = Vue.createApp(App);
-
-// create global components
-
-app.component("results-list", {
-  template: /*html*/ `
-  <ul class="mt-6 sm:mt-0">
-    <slot></slot>
-  </ul>
-  `,
-});
 
 // mount app
 const vm = app.mount("#app");
