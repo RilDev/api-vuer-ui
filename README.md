@@ -1,6 +1,6 @@
 # API Vuer
 
-The friendly robot that searches APIs for you !
+The friendly robot that searches APIs for you!
 
 ## Todo
 
