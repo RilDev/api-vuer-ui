@@ -92,7 +92,7 @@
                 :favorite-results="favoriteResults"
                 :has-search="hasSearch"
                 @remove-from-favorites="removeFromFavorites"
-                @favorite-result="favoriteResult"
+                @add-to-favorites="addToFavorites"
               ></result-item>
             </ul>
             <div class="text-lg -mt-2">
@@ -137,7 +137,7 @@
               :favorite-results="favoriteResults"
               :has-search="hasSearch"
               @remove-from-favorites="removeFromFavorites"
-              @favorite-result="favoriteResult"
+              @add-to-favorites="addToFavorites"
             ></result-item>
           </results-list>
           <results-list v-if="hasResults">
@@ -149,7 +149,7 @@
               :favorite-results="favoriteResults"
               :has-search="hasSearch"
               @remove-from-favorites="removeFromFavorites"
-              @favorite-result="favoriteResult"
+              @add-to-favorites="addToFavorites"
             ></result-item>
           </results-list>
         </section>
