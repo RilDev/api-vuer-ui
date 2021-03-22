@@ -240,7 +240,7 @@ const App = {
               reference="search-input-1"
               :has-search="hasSearch"
               @input="getResults"
-              @clear-search="clearSearch"
+              @clearSearch="clearSearch"
             ></SearchInput>
           </SearchBlock>
           <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
@@ -261,8 +261,8 @@ const App = {
                 :log="log"
                 :index="index"
                 :key="index"
-                @load-history-log="loadHistoryLog"
-                @delete-history-log="deleteHistoryLog"
+                @loadHistoryLog="loadHistoryLog"
+                @deleteHistoryLog="deleteHistoryLog"
               ></HistoryLog>
             </ul>
             <div v-else class="text-center text-gray-400 mt-4">
@@ -291,7 +291,7 @@ const App = {
               ref="search-input-2"
               reference="search-input-2"
               @input="getResults"
-              @clear-search="clearSearch"
+              @clearSearch="clearSearch"
             ></SearchInput>
             <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
             <ul>
@@ -300,8 +300,8 @@ const App = {
                 :result="tutorialResult"
                 :favorite-results="favoriteResults"
                 :has-search="hasSearch"
-                @remove-from-favorites="removeFromFavorites"
-                @add-to-favorites="addToFavorites"
+                @removeFromFavorites="removeFromFavorites"
+                @addToFavorites="addToFavorites"
               ></ResultItem>
             </ul>
             <div class="text-lg -mt-2">
@@ -323,7 +323,7 @@ const App = {
               ref="search-input-3"
               reference="search-input-3"
               @input="getResults"
-              @clear-search="clearSearch"
+              @clearSearch="clearSearch"
             ></SearchInput>
             <div class="text-lg my-3">
               4) Load previous searches by clicking an history log
@@ -332,8 +332,8 @@ const App = {
               <HistoryLog
                 :log="tutorialHistoryLog"
                 :index="-1"
-                @load-history-log="loadHistoryLog"
-                @delete-history-log="deleteHistoryLog"
+                @loadHistoryLog="loadHistoryLog"
+                @deleteHistoryLog="deleteHistoryLog"
               ></HistoryLog>
             </ul>
           </div>
@@ -345,8 +345,8 @@ const App = {
               :result="result"
               :favorite-results="favoriteResults"
               :has-search="hasSearch"
-              @remove-from-favorites="removeFromFavorites"
-              @add-to-favorites="addToFavorites"
+              @removeFromFavorites="removeFromFavorites"
+              @addToFavorites="addToFavorites"
             ></ResultItem>
           </ResultsList>
           <ResultsList v-if="hasResults">
@@ -357,8 +357,8 @@ const App = {
               :result="result"
               :favorite-results="favoriteResults"
               :has-search="hasSearch"
-              @remove-from-favorites="removeFromFavorites"
-              @add-to-favorites="addToFavorites"
+              @removeFromFavorites="removeFromFavorites"
+              @addToFavorites="addToFavorites"
             ></ResultItem>
           </ResultsList>
         </section>
