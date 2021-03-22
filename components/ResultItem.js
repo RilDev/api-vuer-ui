@@ -1,5 +1,10 @@
 export const ResultItem = {
-  props: ["index", "result", "favoriteResults", "hasSearch"],
+  props: {
+    index: Number,
+    result: Object,
+    favoriteResults: Object,
+    hasSearch: Boolean,
+  },
   emits: ["removeFromFavorites", "addToFavorites"],
   data() {
     return {
