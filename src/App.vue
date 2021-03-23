@@ -143,7 +143,7 @@ import { RobotIcon } from "./components/RobotIcon";
 import { ResultsList } from "./components/ResultsList";
 import { ResultItem } from "./components/ResultItem";
 import { HistoryLog } from "./components/HistoryLog";
-import { Footer } from "./components/Footer";
+import Footer from "./components/Footer.vue";
 
 export default {
   components: {
