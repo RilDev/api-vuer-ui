@@ -142,7 +142,7 @@ import { SearchInput } from "./components/SearchInput";
 import { RobotIcon } from "./components/RobotIcon";
 import { ResultsList } from "./components/ResultsList";
 import { ResultItem } from "./components/ResultItem";
-import { HistoryLog } from "./components/HistoryLog";
+import HistoryLog from "./components/HistoryLog.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
