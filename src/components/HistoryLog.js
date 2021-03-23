@@ -27,7 +27,7 @@ export const HistoryLog = {
       @click="$emit('loadHistoryLog', log)"
     >
       <span :class="classesSearch">{{log.search}}</span>
-      <span class="text-gray-400 pr-7">{{log.date}}</span>
+      <span class="text-gray-500 pr-7">{{log.date}}</span>
       <div
         title="Delete Log"
         class="absolute top-2 right-4 cursor-pointer"

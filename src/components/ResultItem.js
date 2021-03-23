@@ -69,7 +69,7 @@ export const ResultItem = {
         <span v-html="corsIcon" v-if="computedIsCors" title="CORS"></span>
       </div>
       <div class="mt-2 text-gray-800">{{result.Description}}</div>
-      <div class="flex mt-2"><span v-html="linkIcon" class="mr-1"></span> <a :href="result.Link" target="_blank" rel="noopener" class="text-blue-500 break-all">{{result.Link}}</a></div>
+      <div class="flex mt-2"><span v-html="linkIcon" class="mr-1"></span> <a :href="result.Link" target="_blank" rel="noopener" class="text-blue-600 hover:text-blue-500 transition break-all">{{result.Link}}</a></div>
       <div class="flex justify-end">
       <button v-if="!computedIsFavorite" @click="$emit('addToFavorites', index)" class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">add to favorite</button>
       <button v-else @click="$emit('removeFromFavorites', computedFavoriteIndex)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">remove from favorite</button>

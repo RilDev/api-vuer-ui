@@ -39,7 +39,7 @@
             @deleteHistoryLog="deleteHistoryLog"
           ></HistoryLog>
         </ul>
-        <div v-else class="text-center text-gray-400 mt-4">No logs yet...</div>
+        <div v-else class="text-center text-gray-500 mt-4">No logs yet...</div>
       </div>
     </section>
     <section class="overflow-auto">
