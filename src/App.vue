@@ -136,7 +136,7 @@ import debounce from "lodash/debounce";
 import moment from "moment";
 
 // import components
-import { Title } from "./components/Title";
+import Title from "./components/Title.vue";
 import SearchBlock from "./components/SearchBlock.vue";
 import SearchInput from "./components/SearchInput.vue";
 import RobotIcon from "./components/RobotIcon.vue";

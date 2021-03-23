@@ -15,7 +15,7 @@ The friendly robot that searches APIs for you!
 - [x] adjust history design to make is fit no matter the number of logs
 - [x] add tutorial when user has no favorite
 - [ ] add random funny messages to the robot when performing actions like `add to favorite`, `remove from favorite`, `delete log`...
-- [ ] convert all component to `.vue` single file components
+- [x] convert all component to `.vue` single file components
 - [ ] test
 - [ ] convert components to composition API
 - [ ] convert project to TypeScript project
