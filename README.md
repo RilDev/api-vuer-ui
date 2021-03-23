@@ -18,6 +18,8 @@ The friendly robot that searches APIs for you!
 - [x] convert all component to `.vue` single file components
 - [ ] test
 - [ ] convert components to composition API
-- [ ] convert project to TypeScript project
 - [ ] make app PWA
 - [ ] add offline mode where the robot says "Can't connect to the network!", disable inputs, gray them off
+- [ ] vuex
+- [ ] vue router
+- [ ] convert project to TypeScript project
