@@ -140,7 +140,7 @@ import { Title } from "./components/Title";
 import { SearchBlock } from "./components/SearchBlock";
 import { SearchInput } from "./components/SearchInput";
 import { RobotIcon } from "./components/RobotIcon";
-import { ResultsList } from "./components/ResultsList";
+import ResultsList from "./components/ResultsList.vue";
 import ResultItem from "./components/ResultItem.vue";
 import HistoryLog from "./components/HistoryLog.vue";
 import Footer from "./components/Footer.vue";
