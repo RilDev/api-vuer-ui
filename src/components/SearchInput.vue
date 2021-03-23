@@ -6,7 +6,7 @@
       :value="value"
       @input="
         $emit('update:value', $event.target.value);
-        $emit('getResults', $event);
+        $emit('getResults', $event.target.value);
       "
       class="rounded-md border-gray-900 mt-3 px-5 py-3 shadow-sm w-full focus:outline-none placeholder-gray-500"
     />
