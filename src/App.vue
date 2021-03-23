@@ -10,7 +10,11 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          ref="search-input-1"
+          :ref="
+            (element) => {
+              inputRefs['search-input-1'] = element;
+            }
+          "
           reference="search-input-1"
           :has-search="hasSearch"
           @getResults="getResults"
@@ -57,7 +61,11 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          ref="search-input-2"
+          :ref="
+            (element) => {
+              inputRefs['search-input-2'] = element;
+            }
+          "
           reference="search-input-2"
           @getResults="getResults"
           @clearSearch="clearSearch"
@@ -84,7 +92,11 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          ref="search-input-3"
+          :ref="
+            (element) => {
+              inputRefs['search-input-3'] = element;
+            }
+          "
           reference="search-input-3"
           @getResults="getResults"
           @clearSearch="clearSearch"
@@ -136,7 +148,7 @@ import debounce from "lodash/debounce";
 import moment from "moment";
 
 // Composition API
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 // import components
 import Title from "./components/Title.vue";
@@ -160,7 +172,10 @@ export default {
     Footer,
   },
   setup() {
-    // static
+    // global refs
+    const inputRefs = ref({});
+
+    // static values
     const placeholder = "ex: robot";
     const tutorialResult = {
       API: "Lingua Robot",
@@ -189,7 +204,7 @@ export default {
       date: "March 22nd 2021, 2:14:38 pm",
     };
 
-    // dynamic
+    // dynamic values
     const search = ref("");
     const results = ref([]);
     const favoriteResults = ref([]);
@@ -201,12 +216,70 @@ export default {
     const isSearching = ref(false);
     const isHistoryLog = ref(false);
 
-    watch(() => console.log("search: " + search.value));
+    // methods
+    const getResults = debounce(async function (inputValue) {
+      /* debounce to avoid GET at every key stroke */
+      // update input search value
+      search.value = inputValue;
+
+      // reset isHistoryLog
+      isHistoryLog.value = false;
+
+      // if search is not empty, GET API response
+      if (search.value !== "") {
+        try {
+          // start GET
+          isSearching.value = true;
+          const response = await axios.get(
+            `https://api.publicapis.org/entries?title=${search.value}`
+          );
+          // end GET
+          isSearching.value = false;
+          results.value = response.data.entries || [];
+        } catch {
+          console.error("Error! API didn't respond!");
+        }
+      } else {
+        // if search input is empty, clean all previous results
+        results.value = [];
+      }
+    }, 300);
+
+    function clearSearch(reference) {
+      search.value = "";
+      results.value = [];
+      // reset isHistoryLog
+      isHistoryLog.value = false;
+
+      // focus on the clicked input
+      inputRefs.value[reference].$el.getElementsByTagName("input")[0].focus();
+    }
+
+    // function updateLocalStorage() {
+    //   // update favorite results
+    //   localStorage.setItem(
+    //     "favorite-results",
+    //     JSON.stringify(favoriteResults.value)
+    //   );
+
+    //   // update search history
+    //   // limit the array length to 20 items
+    //   const slicedArray = searchHistory.value.slice(0, 20);
+    //   localStorage.setItem("search-history", JSON.stringify(slicedArray));
+    // }
+
+    // function timeNow() {
+    //   return moment().format("MMMM Do YYYY, h:mm:ss a");
+    // }
 
     return {
+      // global refs
+      inputRefs,
+      // static values
       placeholder,
       tutorialResult,
       tutorialHistoryLog,
+      // dynamic values
       search,
       results,
       favoriteResults,
@@ -216,14 +289,15 @@ export default {
       hasFavorites,
       isSearching,
       isHistoryLog,
+      // methods
+      getResults,
+      clearSearch,
+      // updateLocalStorage,
+      // timeNow,
     };
   },
   watch: {
     search() {
-      console.log(
-        "🚀 ~ file: App.vue ~ line 217 ~ search ~ this.search",
-        this.search
-      );
       if (this.search.length === 0) {
         this.hasSearch = false;
       } else {
@@ -259,42 +333,42 @@ export default {
     },
   },
   methods: {
-    getResults: debounce(async function (event) {
-      /* debounce to avoid GET at every key stroke */
-      // update input search value
-      this.search = event.target.value;
+    // getResults: debounce(async function (inputValue) {
+    //   /* debounce to avoid GET at every key stroke */
+    //   // update input search value
+    //   this.search = inputValue;
 
-      // reset isHistoryLog
-      this.isHistoryLog = false;
+    //   // reset isHistoryLog
+    //   this.isHistoryLog = false;
 
-      // if search is not empty, GET API response
-      if (this.search !== "") {
-        try {
-          // start GET
-          this.isSearching = true;
-          const response = await axios.get(
-            `https://api.publicapis.org/entries?title=${this.search}`
-          );
-          // end GET
-          this.isSearching = false;
-          this.results = response.data.entries || [];
-        } catch {
-          console.error("Error! API didn't respond!");
-        }
-      } else {
-        // if search input is empty, clean all previous results
-        this.results = [];
-      }
-    }, 300),
-    clearSearch(reference) {
-      this.search = "";
-      this.results = [];
-      // reset isHistoryLog
-      this.isHistoryLog = false;
+    //   // if search is not empty, GET API response
+    //   if (this.search !== "") {
+    //     try {
+    //       // start GET
+    //       this.isSearching = true;
+    //       const response = await axios.get(
+    //         `https://api.publicapis.org/entries?title=${this.search}`
+    //       );
+    //       // end GET
+    //       this.isSearching = false;
+    //       this.results = response.data.entries || [];
+    //     } catch {
+    //       console.error("Error! API didn't respond!");
+    //     }
+    //   } else {
+    //     // if search input is empty, clean all previous results
+    //     this.results = [];
+    //   }
+    // }, 300),
+    // clearSearch(reference) {
+    //   this.search = "";
+    //   this.results = [];
+    //   // reset isHistoryLog
+    //   this.isHistoryLog = false;
 
-      // focus on the clicked input
-      this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
-    },
+    //   // focus on the clicked input
+    //   this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
+    // },
     removeFromFavorites(index) {
       // when click on delete, remove corresponding result
       this.favoriteResults.splice(index, 1);
