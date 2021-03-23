@@ -135,6 +135,9 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import moment from "moment";
 
+// Composition API
+import { ref, watch } from "vue";
+
 // import components
 import Title from "./components/Title.vue";
 import SearchBlock from "./components/SearchBlock.vue";
@@ -156,48 +159,71 @@ export default {
     HistoryLog,
     Footer,
   },
-  data() {
+  setup() {
+    // static
+    const placeholder = "ex: robot";
+    const tutorialResult = {
+      API: "Lingua Robot",
+      Description:
+        "Word definitions, pronunciations, synonyms, antonyms and others",
+      Auth: "apiKey",
+      HTTPS: true,
+      Cors: "yes",
+      Link: "https://www.linguarobot.io",
+      Category: "Dictionaries",
+    };
+    const tutorialHistoryLog = {
+      search: "robot",
+      results: [
+        {
+          API: "Lingua Robot",
+          Description:
+            "Word definitions, pronunciations, synonyms, antonyms and others",
+          Auth: "apiKey",
+          HTTPS: true,
+          Cors: "yes",
+          Link: "https://www.linguarobot.io",
+          Category: "Dictionaries",
+        },
+      ],
+      date: "March 22nd 2021, 2:14:38 pm",
+    };
+
+    // dynamic
+    const search = ref("");
+    const results = ref([]);
+    const favoriteResults = ref([]);
+    const searchHistory = ref([]);
+
+    const hasSearch = ref(false);
+    const hasResults = ref(false);
+    const hasFavorites = ref(false);
+    const isSearching = ref(false);
+    const isHistoryLog = ref(false);
+
+    watch(() => console.log("search: " + search.value));
+
     return {
-      placeholder: "ex: robot",
-      search: "",
-      results: [],
-      hasSearch: false,
-      hasResults: false,
-      hasFavorites: false,
-      isSearching: false,
-      isHistoryLog: false,
-      favoriteResults: [],
-      searchHistory: [],
-      tutorialResult: {
-        API: "Lingua Robot",
-        Description:
-          "Word definitions, pronunciations, synonyms, antonyms and others",
-        Auth: "apiKey",
-        HTTPS: true,
-        Cors: "yes",
-        Link: "https://www.linguarobot.io",
-        Category: "Dictionaries",
-      },
-      tutorialHistoryLog: {
-        search: "robot",
-        results: [
-          {
-            API: "Lingua Robot",
-            Description:
-              "Word definitions, pronunciations, synonyms, antonyms and others",
-            Auth: "apiKey",
-            HTTPS: true,
-            Cors: "yes",
-            Link: "https://www.linguarobot.io",
-            Category: "Dictionaries",
-          },
-        ],
-        date: "March 22nd 2021, 2:14:38 pm",
-      },
+      placeholder,
+      tutorialResult,
+      tutorialHistoryLog,
+      search,
+      results,
+      favoriteResults,
+      searchHistory,
+      hasSearch,
+      hasResults,
+      hasFavorites,
+      isSearching,
+      isHistoryLog,
     };
   },
   watch: {
     search() {
+      console.log(
+        "🚀 ~ file: App.vue ~ line 217 ~ search ~ this.search",
+        this.search
+      );
       if (this.search.length === 0) {
         this.hasSearch = false;
       } else {
