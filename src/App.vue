@@ -138,7 +138,7 @@ import moment from "moment";
 // import components
 import { Title } from "./components/Title";
 import SearchBlock from "./components/SearchBlock.vue";
-import { SearchInput } from "./components/SearchInput";
+import SearchInput from "./components/SearchInput.vue";
 import RobotIcon from "./components/RobotIcon.vue";
 import ResultsList from "./components/ResultsList.vue";
 import ResultItem from "./components/ResultItem.vue";
