@@ -1,5 +1,138 @@
+<template>
+  <main
+    class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 sm:items-stretch"
+  >
+    <section class="sm:flex sm:flex-col sm:overflow-hidden">
+      <header>
+        <Title></Title>
+      </header>
+      <SearchBlock>
+        <SearchInput
+          v-model:value="search"
+          :placeholder="placeholder"
+          ref="search-input-1"
+          reference="search-input-1"
+          :has-search="hasSearch"
+          @getResults="getResults"
+          @clearSearch="clearSearch"
+        ></SearchInput>
+      </SearchBlock>
+      <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
+        <RobotIcon
+          :has-search="hasSearch"
+          :has-results="hasResults"
+          :is-searching="isSearching"
+        ></RobotIcon>
+        <div>{{ resultsPlaceholder }}</div>
+      </div>
+      <div
+        class="hidden sm:mt-6 sm:flex sm:flex-col sm:flex-grow sm:overflow-hidden"
+      >
+        <div class="text-3xl text-center font-bold">Recent History</div>
+        <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
+          <HistoryLog
+            v-for="(log, index) in searchHistory"
+            :log="log"
+            :index="index"
+            :key="index"
+            @loadHistoryLog="loadHistoryLog"
+            @deleteHistoryLog="deleteHistoryLog"
+          ></HistoryLog>
+        </ul>
+        <div v-else class="text-center text-gray-400 mt-4">No logs yet...</div>
+      </div>
+    </section>
+    <section class="overflow-auto">
+      <div v-if="!hasResults" class="mt-6 flex flex-col items-center sm:hidden">
+        <RobotIcon
+          :has-search="hasSearch"
+          :has-results="hasResults"
+          :is-searching="isSearching"
+        ></RobotIcon>
+        <div>{{ resultsPlaceholder }}</div>
+      </div>
+      <div v-if="!hasFavorites && !hasResults" class="mt-6 sm:mt-0">
+        <div class="text-center text-3xl font-bold mb-4">Tutorial</div>
+        <div class="text-lg">1) Enter your search in the search input</div>
+        <SearchInput
+          v-model:value="search"
+          :placeholder="placeholder"
+          ref="search-input-2"
+          reference="search-input-2"
+          @getResults="getResults"
+          @clearSearch="clearSearch"
+        ></SearchInput>
+        <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
+        <ul>
+          <ResultItem
+            :index="-1"
+            :result="tutorialResult"
+            :favorite-results="favoriteResults"
+            :has-search="hasSearch"
+            @removeFromFavorites="removeFromFavorites"
+            @addToFavorites="addToFavorites"
+          ></ResultItem>
+        </ul>
+        <div class="text-lg -mt-2">
+          3) Reset the search by clicking on the
+          <svg width="24" height="24" viewBox="0 0 24 24" class="inline-block">
+            <path
+              d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+            />
+          </svg>
+        </div>
+        <SearchInput
+          v-model:value="search"
+          :placeholder="placeholder"
+          ref="search-input-3"
+          reference="search-input-3"
+          @getResults="getResults"
+          @clearSearch="clearSearch"
+        ></SearchInput>
+        <div class="text-lg my-3">
+          4) Load previous searches by clicking an history log
+        </div>
+        <ul>
+          <HistoryLog
+            :log="tutorialHistoryLog"
+            :index="-1"
+            @loadHistoryLog="loadHistoryLog"
+            @deleteHistoryLog="deleteHistoryLog"
+          ></HistoryLog>
+        </ul>
+      </div>
+      <ResultsList v-if="hasFavorites && !hasResults">
+        <ResultItem
+          v-for="(result, index) in favoriteResults"
+          :key="index"
+          :index="index"
+          :result="result"
+          :favorite-results="favoriteResults"
+          :has-search="hasSearch"
+          @removeFromFavorites="removeFromFavorites"
+          @addToFavorites="addToFavorites"
+        ></ResultItem>
+      </ResultsList>
+      <ResultsList v-if="hasResults">
+        <ResultItem
+          v-for="(result, index) in results"
+          :key="index"
+          :index="index"
+          :result="result"
+          :favorite-results="favoriteResults"
+          :has-search="hasSearch"
+          @removeFromFavorites="removeFromFavorites"
+          @addToFavorites="addToFavorites"
+        ></ResultItem>
+      </ResultsList>
+    </section>
+  </main>
+  <Footer></Footer>
+</template>
+
+<script>
 import axios from "axios";
-import _ from "lodash";
+import debounce from "lodash/debounce";
 import moment from "moment";
 
 // import components
@@ -12,8 +145,17 @@ import { ResultItem } from "./components/ResultItem";
 import { HistoryLog } from "./components/HistoryLog";
 import { Footer } from "./components/Footer";
 
-// bootstrap app
-export const App = {
+export default {
+  components: {
+    Title,
+    SearchBlock,
+    SearchInput,
+    RobotIcon,
+    ResultsList,
+    ResultItem,
+    HistoryLog,
+    Footer,
+  },
   data() {
     return {
       placeholder: "ex: robot",
@@ -91,7 +233,7 @@ export const App = {
     },
   },
   methods: {
-    getResults: _.debounce(async function (event) {
+    getResults: debounce(async function (event) {
       /* debounce to avoid GET at every key stroke */
       // update input search value
       this.search = event.target.value;
@@ -213,155 +355,5 @@ export const App = {
     }
     this.searchHistory = JSON.parse(localStorage.getItem("search-history"));
   },
-  components: {
-    Title,
-    SearchBlock,
-    SearchInput,
-    RobotIcon,
-    ResultsList,
-    ResultItem,
-    HistoryLog,
-    Footer,
-  },
-  template: /*html*/ `
-  <main
-        class="flex-grow flex flex-col h-full sm:grid sm:grid-cols-2 sm:gap-x-7 sm:items-stretch"
-      >
-        <section class="sm:flex sm:flex-col sm:overflow-hidden">
-          <header>
-            <Title></Title>
-          </header>
-          <SearchBlock>
-            <SearchInput
-              v-model:value="search"
-              :placeholder="placeholder"
-              ref="search-input-1"
-              reference="search-input-1"
-              :has-search="hasSearch"
-              @getResults="getResults"
-              @clearSearch="clearSearch"
-            ></SearchInput>
-          </SearchBlock>
-          <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
-            <RobotIcon
-              :has-search="hasSearch"
-              :has-results="hasResults"
-              :is-searching="isSearching"
-            ></RobotIcon>
-            <div>{{resultsPlaceholder}}</div>
-          </div>
-          <div
-            class="hidden sm:mt-6 sm:flex sm:flex-col sm:flex-grow sm:overflow-hidden"
-          >
-            <div class="text-3xl text-center font-bold">Recent History</div>
-            <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
-              <HistoryLog
-                v-for="(log, index) in searchHistory"
-                :log="log"
-                :index="index"
-                :key="index"
-                @loadHistoryLog="loadHistoryLog"
-                @deleteHistoryLog="deleteHistoryLog"
-              ></HistoryLog>
-            </ul>
-            <div v-else class="text-center text-gray-400 mt-4">
-              No logs yet...
-            </div>
-          </div>
-        </section>
-        <section class="overflow-auto">
-          <div
-            v-if="!hasResults"
-            class="mt-6 flex flex-col items-center sm:hidden"
-          >
-            <RobotIcon
-              :has-search="hasSearch"
-              :has-results="hasResults"
-              :is-searching="isSearching"
-            ></RobotIcon>
-            <div>{{resultsPlaceholder}}</div>
-          </div>
-          <div v-if="!hasFavorites && !hasResults" class="mt-6 sm:mt-0">
-            <div class="text-center text-3xl font-bold mb-4">Tutorial</div>
-            <div class="text-lg">1) Enter your search in the search input</div>
-            <SearchInput
-              v-model:value="search"
-              :placeholder="placeholder"
-              ref="search-input-2"
-              reference="search-input-2"
-              @getResults="getResults"
-              @clearSearch="clearSearch"
-            ></SearchInput>
-            <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
-            <ul>
-              <ResultItem
-                :index="-1"
-                :result="tutorialResult"
-                :favorite-results="favoriteResults"
-                :has-search="hasSearch"
-                @removeFromFavorites="removeFromFavorites"
-                @addToFavorites="addToFavorites"
-              ></ResultItem>
-            </ul>
-            <div class="text-lg -mt-2">
-              3) Reset the search by clicking on the
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                class="inline-block"
-              >
-                <path
-                  d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
-                />
-              </svg>
-            </div>
-            <SearchInput
-              v-model:value="search"
-              :placeholder="placeholder"
-              ref="search-input-3"
-              reference="search-input-3"
-              @getResults="getResults"
-              @clearSearch="clearSearch"
-            ></SearchInput>
-            <div class="text-lg my-3">
-              4) Load previous searches by clicking an history log
-            </div>
-            <ul>
-              <HistoryLog
-                :log="tutorialHistoryLog"
-                :index="-1"
-                @loadHistoryLog="loadHistoryLog"
-                @deleteHistoryLog="deleteHistoryLog"
-              ></HistoryLog>
-            </ul>
-          </div>
-          <ResultsList v-if="hasFavorites && !hasResults">
-            <ResultItem
-              v-for="(result, index) in favoriteResults"
-              :key="index"
-              :index="index"
-              :result="result"
-              :favorite-results="favoriteResults"
-              :has-search="hasSearch"
-              @removeFromFavorites="removeFromFavorites"
-              @addToFavorites="addToFavorites"
-            ></ResultItem>
-          </ResultsList>
-          <ResultsList v-if="hasResults">
-            <ResultItem
-              v-for="(result, index) in results"
-              :key="index"
-              :index="index"
-              :result="result"
-              :favorite-results="favoriteResults"
-              :has-search="hasSearch"
-              @removeFromFavorites="removeFromFavorites"
-              @addToFavorites="addToFavorites"
-            ></ResultItem>
-          </ResultsList>
-        </section>
-      </main>
-      <Footer></Footer>
-  `,
 };
+</script>
