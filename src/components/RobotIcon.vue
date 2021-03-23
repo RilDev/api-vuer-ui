@@ -1,4 +1,11 @@
-export const RobotIcon = {
+<template>
+  <svg width="150" height="150" viewBox="0 0 24 24" class="fill-current">
+    <path :d="this.robotState" />
+  </svg>
+</template>
+
+<script>
+export default {
   props: { hasSearch: Boolean, isSearching: Boolean, hasResults: Boolean },
   data() {
     return {
@@ -32,16 +39,5 @@ export const RobotIcon = {
       }
     },
   },
-  template: /*html*/ `
-    <svg
-      width="150"
-      height="150"
-      viewBox="0 0 24 24"
-      class="fill-current"
-    >
-      <path
-        :d="this.robotState"
-      />
-    </svg>
-    `,
 };
+</script>
