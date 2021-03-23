@@ -1,4 +1,47 @@
-export const ResultItem = {
+<template>
+  <li :class="classes" class="mb-3 px-5 py-4 rounded-md shadow-md sm:mb-5">
+    <div class="flex flex-wrap space-x-1">
+      <div class="text-xl font-bold">{{ result.API }}</div>
+      <span
+        v-html="authIcon"
+        v-if="computedIsAuth"
+        title="API Key Required"
+      ></span>
+      <span v-html="httpsIcon" v-if="computedIsHttps" title="HTTPS"></span>
+      <span v-html="corsIcon" v-if="computedIsCors" title="CORS"></span>
+    </div>
+    <div class="mt-2 text-gray-800">{{ result.Description }}</div>
+    <div class="flex mt-2">
+      <span v-html="linkIcon" class="mr-1"></span>
+      <a
+        :href="result.Link"
+        target="_blank"
+        rel="noopener"
+        class="text-blue-600 hover:text-blue-500 transition break-all"
+        >{{ result.Link }}</a
+      >
+    </div>
+    <div class="flex justify-end mt-2">
+      <button
+        v-if="!computedIsFavorite"
+        @click="$emit('addToFavorites', index)"
+        class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition"
+      >
+        add to favorite
+      </button>
+      <button
+        v-else
+        @click="$emit('removeFromFavorites', computedFavoriteIndex)"
+        class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition"
+      >
+        remove from favorite
+      </button>
+    </div>
+  </li>
+</template>
+
+<script>
+export default {
   props: {
     index: Number,
     result: Object,
@@ -60,20 +103,5 @@ export const ResultItem = {
       };
     },
   },
-  template: /*html*/ `
-    <li :class="classes" class="mb-3 px-5 py-4 rounded-md shadow-md sm:mb-5">
-      <div class="flex flex-wrap space-x-1">
-        <div class="text-xl font-bold">{{result.API}}</div>
-        <span v-html="authIcon" v-if="computedIsAuth" title="API Key Required"></span>
-        <span v-html="httpsIcon" v-if="computedIsHttps" title="HTTPS"></span>
-        <span v-html="corsIcon" v-if="computedIsCors" title="CORS"></span>
-      </div>
-      <div class="mt-2 text-gray-800">{{result.Description}}</div>
-      <div class="flex mt-2"><span v-html="linkIcon" class="mr-1"></span> <a :href="result.Link" target="_blank" rel="noopener" class="text-blue-600 hover:text-blue-500 transition break-all">{{result.Link}}</a></div>
-      <div class="flex justify-end mt-2">
-      <button v-if="!computedIsFavorite" @click="$emit('addToFavorites', index)" class="border-green-700 hover:bg-green-700 border text-green-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">add to favorite</button>
-      <button v-else @click="$emit('removeFromFavorites', computedFavoriteIndex)" class="border-red-700 hover:bg-red-700 border text-red-700 hover:text-white px-2 py-1 text-xs uppercase tracking-wider rounded-md transition">remove from favorite</button>
-      </div>
-    </li>
-    `,
 };
+</script>
