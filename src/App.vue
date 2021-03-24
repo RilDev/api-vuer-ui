@@ -33,22 +33,16 @@
           :is-history-log="isHistoryLog"
         ></RobotIcon>
       </RobotBlock>
-      <div
-        class="hidden sm:mt-6 sm:flex sm:flex-col sm:flex-grow sm:overflow-hidden"
-      >
-        <div class="text-3xl text-center font-bold">Recent History</div>
-        <ul v-if="searchHistory.length" class="mt-4 h-full overflow-auto">
-          <HistoryLog
-            v-for="(log, index) in searchHistory"
-            :log="log"
-            :index="index"
-            :key="index"
-            @loadHistoryLog="loadHistoryLog"
-            @deleteHistoryLog="deleteHistoryLog"
-          ></HistoryLog>
-        </ul>
-        <div v-else class="text-center text-gray-500 mt-4">No logs yet...</div>
-      </div>
+      <HistoryLogList :search-history="searchHistory">
+        <HistoryLog
+          v-for="(log, index) in searchHistory"
+          :log="log"
+          :index="index"
+          :key="index"
+          @loadHistoryLog="loadHistoryLog"
+          @deleteHistoryLog="deleteHistoryLog"
+        ></HistoryLog>
+      </HistoryLogList>
     </section>
     <section class="overflow-auto">
       <RobotBlock
@@ -154,6 +148,7 @@ import RobotBlock from "/src/components/RobotBlock.vue";
 import RobotIcon from "/src/components/RobotIcon.vue";
 import ResultsList from "/src/components/ResultsList.vue";
 import ResultItem from "/src/components/ResultItem.vue";
+import HistoryLogList from "/src/components/HistoryLogList.vue";
 import HistoryLog from "/src/components/HistoryLog.vue";
 import Tutorial from "/src/components/Tutorial.vue";
 import Footer from "/src/components/Footer.vue";
@@ -167,6 +162,7 @@ export default {
     RobotIcon,
     ResultsList,
     ResultItem,
+    HistoryLogList,
     HistoryLog,
     Tutorial,
     Footer,
@@ -191,8 +187,6 @@ export default {
       isSearching,
       isHistoryLog,
       isSearchDelay,
-      // computed
-      resultsPlaceholder,
       // methods
       getResults,
       clearSearch,
@@ -276,8 +270,6 @@ export default {
       isSearching,
       isHistoryLog,
       isSearchDelay,
-      // computed
-      resultsPlaceholder,
       // methods
       getResults,
       clearSearch,
