@@ -363,6 +363,21 @@ export default {
       return moment().format("MMMM Do YYYY, h:mm:ss a");
     }
 
+    onMounted(() => {
+      // init localStorage
+      if (localStorage.getItem("favorite-results") === null) {
+        localStorage.setItem("favorite-results", JSON.stringify([]));
+      }
+      favoriteResults.value = JSON.parse(
+        localStorage.getItem("favorite-results")
+      );
+
+      if (localStorage.getItem("search-history") === null) {
+        localStorage.setItem("search-history", JSON.stringify([]));
+      }
+      searchHistory.value = JSON.parse(localStorage.getItem("search-history"));
+    });
+
     return {
       // global refs
       inputRefs,
@@ -392,18 +407,6 @@ export default {
       updateLocalStorage,
       timeNow,
     };
-  },
-  mounted() {
-    // init localStorage
-    if (localStorage.getItem("favorite-results") === null) {
-      localStorage.setItem("favorite-results", JSON.stringify([]));
-    }
-    this.favoriteResults = JSON.parse(localStorage.getItem("favorite-results"));
-
-    if (localStorage.getItem("search-history") === null) {
-      localStorage.setItem("search-history", JSON.stringify([]));
-    }
-    this.searchHistory = JSON.parse(localStorage.getItem("search-history"));
   },
 };
 </script>
