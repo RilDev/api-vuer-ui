@@ -1,5 +1,5 @@
-import moment from "moment";
+import dayjs from "dayjs";
 
 export default function timeNow() {
-  return moment().format("MMMM Do YYYY, h:mm:ss a");
+  return dayjs().format("MM/DD/YYYY h:mm:ss A");
 }
