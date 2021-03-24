@@ -136,6 +136,7 @@ import debounce from "lodash/debounce";
 
 // Composition API
 import { ref, watch, onMounted, computed } from "vue";
+import useUpdateLocalStorage from "/src/use/update-local-storage";
 import useTimeNow from "/src/use/time-now";
 
 // import components
@@ -161,6 +162,7 @@ export default {
   },
   setup() {
     // use
+    const updateLocalStorage = useUpdateLocalStorage;
     const timeNow = useTimeNow;
 
     // global refs
@@ -259,12 +261,12 @@ export default {
           results: results.value,
           date: timeNow(),
         });
-        updateLocalStorage();
+        updateLocalStorage(favoriteResults, searchHistory);
       }
     });
 
     watch(favoriteResults, () => {
-      updateLocalStorage();
+      updateLocalStorage(favoriteResults, searchHistory);
 
       if (favoriteResults.value.length === 0) {
         hasFavorites.value = false;
@@ -345,21 +347,8 @@ export default {
       // if index = -1, it is the tutorial history log
       if (index !== -1) {
         searchHistory.value.splice(index, 1);
-        updateLocalStorage();
+        updateLocalStorage(favoriteResults, searchHistory);
       }
-    }
-
-    function updateLocalStorage() {
-      // update favorite results
-      localStorage.setItem(
-        "favorite-results",
-        JSON.stringify(favoriteResults.value)
-      );
-
-      // update search history
-      // limit the array length to 20 items
-      const slicedArray = searchHistory.value.slice(0, 20);
-      localStorage.setItem("search-history", JSON.stringify(slicedArray));
     }
 
     onMounted(() => {
@@ -403,6 +392,8 @@ export default {
       addToFavorites,
       loadHistoryLog,
       deleteHistoryLog,
+      /* useUpdateLocalStorage */
+      // method
       updateLocalStorage,
       /* useTimeNow */
       // method
