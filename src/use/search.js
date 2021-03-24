@@ -2,7 +2,7 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 
 // Composition API
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 export default function useSearch() {
   // global refs
@@ -34,7 +34,7 @@ export default function useSearch() {
         Category: "Dictionaries",
       },
     ],
-    date: "March 22nd 2021, 2:14:38 pm",
+    date: "01/01/2021 12:00:00 PM",
   };
 
   // dynamic values
