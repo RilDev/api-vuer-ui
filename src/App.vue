@@ -136,7 +136,7 @@ import debounce from "lodash/debounce";
 import moment from "moment";
 
 // Composition API
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 
 // import components
 import Title from "./components/Title.vue";
@@ -203,6 +203,34 @@ export default {
     const hasFavorites = ref(false);
     const isSearching = ref(false);
     const isHistoryLog = ref(false);
+
+    // computed
+    const resultsPlaceholder = computed(() => {
+      // load history log
+      if (isHistoryLog.value && hasResults.value) {
+        return "Data retrieved from memory!";
+      }
+      // load history log with no resutls search
+      if (isHistoryLog.value && !hasResults.value) {
+        return "That one was a bad one!";
+      }
+      // no search yet
+      if (!hasSearch.value) {
+        return "Awaiting search request!";
+      }
+      // is searching
+      if (hasSearch.value && isSearching.value) {
+        return "Searching...";
+      }
+      // no search results
+      if (hasSearch.value && !hasResults.value) {
+        return "No results found!";
+      }
+      // has search results
+      if (hasSearch.value && hasResults.value) {
+        return "Here you go!";
+      }
+    });
 
     // methods
     const getResults = debounce(async function (inputValue) {
@@ -314,6 +342,8 @@ export default {
       hasFavorites,
       isSearching,
       isHistoryLog,
+      // computed
+      resultsPlaceholder,
       // methods
       getResults,
       clearSearch,
@@ -322,7 +352,7 @@ export default {
       loadHistoryLog,
       deleteHistoryLog,
       updateLocalStorage,
-      timeNow,
+      timeNow, 
     };
   },
   watch: {
@@ -358,34 +388,6 @@ export default {
         this.hasFavorites = false;
       } else {
         this.hasFavorites = true;
-      }
-    },
-  },
-  computed: {
-    resultsPlaceholder() {
-      // load history log
-      if (this.isHistoryLog && this.hasResults) {
-        return "Data retrieved from memory!";
-      }
-      // load history log with no resutls search
-      if (this.isHistoryLog && !this.hasResults) {
-        return "That one was a bad one!";
-      }
-      // no search yet
-      if (!this.hasSearch) {
-        return "Awaiting search request!";
-      }
-      // is searching
-      if (this.hasSearch && this.isSearching) {
-        return "Searching...";
-      }
-      // no search results
-      if (this.hasSearch && !this.hasResults) {
-        return "No results found!";
-      }
-      // has search results
-      if (this.hasSearch && this.hasResults) {
-        return "Here you go!";
       }
     },
   },
