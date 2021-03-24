@@ -269,9 +269,6 @@ export default {
       loadHistoryLog,
       deleteHistoryLog,
       updateLocalStorage,
-      /* useTimeNow */
-      // method
-      timeNow,
     };
   },
 };
