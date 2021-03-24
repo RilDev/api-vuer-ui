@@ -6,8 +6,27 @@
         target="_blank"
         rel="noopener"
         class="text-blue-600 hover:text-blue-500 transition"
-        >
-        RilDev</a> &copy; 2021
+      >
+        RilDev</a
+      >
+      &copy; {{ computedYearNow }}
     </span>
   </footer>
 </template>
+
+<script>
+import { computed } from "vue";
+import useTime from "/src/use/time";
+
+export default {
+  setup() {
+    const { yearNow } = useTime();
+
+    const computedYearNow = computed(() => {
+      return yearNow();
+    });
+
+    return { computedYearNow };
+  },
+};
+</script>
