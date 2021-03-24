@@ -133,10 +133,10 @@
 <script>
 import axios from "axios";
 import debounce from "lodash/debounce";
-import moment from "moment";
 
 // Composition API
 import { ref, watch, onMounted, computed } from "vue";
+import useTimeNow from "/src/use/time-now";
 
 // import components
 import Title from "/src/components/Title.vue";
@@ -160,6 +160,9 @@ export default {
     Footer,
   },
   setup() {
+    // use
+    const timeNow = useTimeNow;
+
     // global refs
     const inputRefs = ref({});
 
@@ -359,10 +362,6 @@ export default {
       localStorage.setItem("search-history", JSON.stringify(slicedArray));
     }
 
-    function timeNow() {
-      return moment().format("MMMM Do YYYY, h:mm:ss a");
-    }
-
     onMounted(() => {
       // init localStorage
       if (localStorage.getItem("favorite-results") === null) {
@@ -405,6 +404,8 @@ export default {
       loadHistoryLog,
       deleteHistoryLog,
       updateLocalStorage,
+      /* useTimeNow */
+      // method
       timeNow,
     };
   },
