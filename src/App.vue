@@ -139,14 +139,14 @@ import moment from "moment";
 import { ref, watch, onMounted, computed } from "vue";
 
 // import components
-import Title from "./components/Title.vue";
-import SearchBlock from "./components/SearchBlock.vue";
-import SearchInput from "./components/SearchInput.vue";
-import RobotIcon from "./components/RobotIcon.vue";
-import ResultsList from "./components/ResultsList.vue";
-import ResultItem from "./components/ResultItem.vue";
-import HistoryLog from "./components/HistoryLog.vue";
-import Footer from "./components/Footer.vue";
+import Title from "/src/components/Title.vue";
+import SearchBlock from "/src/components/SearchBlock.vue";
+import SearchInput from "/src/components/SearchInput.vue";
+import RobotIcon from "/src/components/RobotIcon.vue";
+import ResultsList from "/src/components/ResultsList.vue";
+import ResultItem from "/src/components/ResultItem.vue";
+import HistoryLog from "/src/components/HistoryLog.vue";
+import Footer from "/src/components/Footer.vue";
 
 export default {
   components: {
