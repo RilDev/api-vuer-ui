@@ -41,16 +41,18 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   props: {
-    index: Number,
-    result: Object,
-    favoriteResults: Object,
-    hasSearch: Boolean,
+    index: { type: Number, required: true },
+    result: { type: Object, required: true },
+    favoriteResults: { type: Object, required: true },
+    hasSearch: { type: Boolean, required: true },
   },
   emits: ["removeFromFavorites", "addToFavorites"],
-  setup() {
-    // available options SVGs
+  setup(props) {
+    // static values
     const linkIcon =
       '<svg width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z" /></svg>';
     const authIcon =
@@ -60,45 +62,63 @@ export default {
     const corsIcon =
       '<svg width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,7A2,2 0 0,0 9,9V15A2,2 0 0,0 11,17H13A2,2 0 0,0 15,15V14H13V15H11V9H13V10H15V9A2,2 0 0,0 13,7H11Z" /></svg>';
 
-    return { linkIcon, authIcon, httpsIcon, corsIcon };
-  },
-  computed: {
-    computedIsAuth() {
-      return this.result.Auth === "apiKey";
-    },
-    computedIsHttps() {
-      return this.result.HTTPS;
-    },
-    computedIsCors() {
-      return this.result.Cors === "yes";
-    },
-    computedIsFavorite() {
-      for (const result of this.favoriteResults) {
-        if (result.Link === this.result.Link) {
+    // computed
+    const computedIsAuth = computed(() => {
+      return props.result.Auth === "apiKey";
+    });
+
+    const computedIsHttps = computed(() => {
+      return props.result.HTTPS;
+    });
+
+    const computedIsCors = computed(() => {
+      return props.result.Cors === "yes";
+    });
+
+    const computedIsFavorite = computed(() => {
+      for (const result of props.favoriteResults) {
+        if (result.Link === props.result.Link) {
           return true;
         }
       }
       return false;
-    },
-    computedFavoriteIndex() {
-      for (const [index, result] of this.favoriteResults.entries()) {
+    });
+
+    const computedFavoriteIndex = computed(() => {
+      for (const [index, result] of props.favoriteResults.entries()) {
         // if the favorite is viewed from the favorite list, then send the current index
         // else, send calculated value corresponding to the index in the favoriteResults array
-        if (!this.hasSearch) {
-          return this.index;
+        if (!props.hasSearch) {
+          return props.index;
         } else {
-          if (result.Link === this.result.Link) {
+          if (result.Link === props.result.Link) {
             return index;
           }
         }
       }
-    },
-    classes() {
+    });
+
+    const classes = computed(() => {
       return {
-        "bg-green-50": this.computedIsFavorite,
-        "bg-gray-50": !this.computedIsFavorite,
+        "bg-green-50": props.computedIsFavorite,
+        "bg-gray-50": !props.computedIsFavorite,
       };
-    },
+    });
+
+    return {
+      // static values
+      linkIcon,
+      authIcon,
+      httpsIcon,
+      corsIcon,
+      // computed
+      computedIsAuth,
+      computedIsHttps,
+      computedIsCors,
+      computedIsFavorite,
+      computedFavoriteIndex,
+      classes,
+    };
   },
 };
 </script>
