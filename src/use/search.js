@@ -50,38 +50,6 @@ export default function useSearch() {
   const isHistoryLog = ref(false);
   const isSearchDelay = ref(false);
 
-  // computed
-  const resultsPlaceholder = computed(() => {
-    // load history log
-    if (isHistoryLog.value && hasResults.value) {
-      return "Data retrieved from memory!";
-    }
-    // load history log with no resutls search
-    if (isHistoryLog.value && !hasResults.value) {
-      return "That one was a bad one!";
-    }
-    // no search yet
-    if (!hasSearch.value) {
-      return "Awaiting search request!";
-    }
-    // user is typing
-    if (hasSearch.value && isSearchDelay.value) {
-      return "Listening...";
-    }
-    // is searching
-    if (hasSearch.value && isSearching.value) {
-      return "Searching...";
-    }
-    // no search results
-    if (hasSearch.value && !hasResults.value && !isSearchDelay.value) {
-      return "No results found!";
-    }
-    // has search results
-    if (hasSearch.value && hasResults.value) {
-      return "Here you go!";
-    }
-  });
-
   // methods
   const getResults = debounce(async function (inputValue) {
     /* debounce to avoid GET at every key stroke */
@@ -190,8 +158,6 @@ export default function useSearch() {
     isSearching,
     isHistoryLog,
     isSearchDelay,
-    // computed
-    resultsPlaceholder,
     // methods
     getResults,
     clearSearch,

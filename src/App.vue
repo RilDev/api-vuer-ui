@@ -17,7 +17,14 @@
           @clearSearch="clearSearch"
         ></SearchInput>
       </SearchBlock>
-      <div class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center">
+      <RobotBlock
+        :has-search="hasSearch"
+        :has-results="hasResults"
+        :is-searching="isSearching"
+        :is-search-delay="isSearchDelay"
+        :is-history-log="isHistoryLog"
+        class="hidden sm:mt-6 sm:flex sm:flex-col sm:items-center"
+      >
         <RobotIcon
           :has-search="hasSearch"
           :has-results="hasResults"
@@ -25,8 +32,7 @@
           :is-search-delay="isSearchDelay"
           :is-history-log="isHistoryLog"
         ></RobotIcon>
-        <div>{{ resultsPlaceholder }}</div>
-      </div>
+      </RobotBlock>
       <div
         class="hidden sm:mt-6 sm:flex sm:flex-col sm:flex-grow sm:overflow-hidden"
       >
@@ -45,7 +51,14 @@
       </div>
     </section>
     <section class="overflow-auto">
-      <div v-if="!hasResults" class="mt-6 flex flex-col items-center sm:hidden">
+      <RobotBlock
+        :has-search="hasSearch"
+        :has-results="hasResults"
+        :is-searching="isSearching"
+        :is-search-delay="isSearchDelay"
+        :is-history-log="isHistoryLog"
+        class="mt-6 flex flex-col items-center sm:hidden"
+      >
         <RobotIcon
           :has-search="hasSearch"
           :has-results="hasResults"
@@ -53,8 +66,7 @@
           :is-search-delay="isSearchDelay"
           :is-history-log="isHistoryLog"
         ></RobotIcon>
-        <div>{{ resultsPlaceholder }}</div>
-      </div>
+      </RobotBlock>
       <Tutorial v-if="!hasFavorites && !hasResults">
         <template #tutorial-1>
           <SearchInput
@@ -138,6 +150,7 @@ import useTime from "/src/use/time";
 import Title from "/src/components/Title.vue";
 import SearchBlock from "/src/components/SearchBlock.vue";
 import SearchInput from "/src/components/SearchInput.vue";
+import RobotBlock from "/src/components/RobotBlock.vue";
 import RobotIcon from "/src/components/RobotIcon.vue";
 import ResultsList from "/src/components/ResultsList.vue";
 import ResultItem from "/src/components/ResultItem.vue";
@@ -150,6 +163,7 @@ export default {
     Title,
     SearchBlock,
     SearchInput,
+    RobotBlock,
     RobotIcon,
     ResultsList,
     ResultItem,
