@@ -232,6 +232,44 @@ export default {
       }
     });
 
+    // watch
+    watch(search, () => {
+      if (search.value.length === 0) {
+        hasSearch.value = false;
+      } else {
+        hasSearch.value = true;
+      }
+    });
+
+    watch(results, () => {
+      if (results.value.length === 0) {
+        hasResults.value = false;
+      } else {
+        hasResults.value = true;
+      }
+
+      // save result in search history
+      // don't save if the search is empty
+      if (hasSearch.value && !isHistoryLog.value) {
+        searchHistory.value.unshift({
+          search: search.value,
+          results: results.value,
+          date: timeNow(),
+        });
+        updateLocalStorage();
+      }
+    });
+
+    watch(favoriteResults, () => {
+      updateLocalStorage();
+
+      if (favoriteResults.value.length === 0) {
+        hasFavorites.value = false;
+      } else {
+        hasFavorites.value = true;
+      }
+    });
+
     // methods
     const getResults = debounce(async function (inputValue) {
       /* debounce to avoid GET at every key stroke */
@@ -352,44 +390,8 @@ export default {
       loadHistoryLog,
       deleteHistoryLog,
       updateLocalStorage,
-      timeNow, 
+      timeNow,
     };
-  },
-  watch: {
-    search() {
-      if (this.search.length === 0) {
-        this.hasSearch = false;
-      } else {
-        this.hasSearch = true;
-      }
-    },
-    results() {
-      if (this.results.length === 0) {
-        this.hasResults = false;
-      } else {
-        this.hasResults = true;
-      }
-
-      // save result in search history
-      // don't save if the search is empty
-      if (this.hasSearch && !this.isHistoryLog) {
-        this.searchHistory.unshift({
-          search: this.search,
-          results: this.results,
-          date: this.timeNow(),
-        });
-        this.updateLocalStorage();
-      }
-    },
-    favoriteResults() {
-      this.updateLocalStorage();
-
-      if (this.favoriteResults.length === 0) {
-        this.hasFavorites = false;
-      } else {
-        this.hasFavorites = true;
-      }
-    },
   },
   mounted() {
     // init localStorage
