@@ -10,11 +10,7 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          :ref="
-            (element) => {
-              inputRefs['search-input-1'] = element;
-            }
-          "
+          v-model:inputRefs="inputRefs"
           reference="search-input-1"
           :has-search="hasSearch"
           @getResults="getResults"
@@ -61,11 +57,7 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          :ref="
-            (element) => {
-              inputRefs['search-input-2'] = element;
-            }
-          "
+          v-model:inputRefs="inputRefs"
           reference="search-input-2"
           @getResults="getResults"
           @clearSearch="clearSearch"
@@ -92,11 +84,7 @@
         <SearchInput
           v-model:value="search"
           :placeholder="placeholder"
-          :ref="
-            (element) => {
-              inputRefs['search-input-3'] = element;
-            }
-          "
+          v-model:inputRefs="inputRefs"
           reference="search-input-3"
           @getResults="getResults"
           @clearSearch="clearSearch"
@@ -252,7 +240,8 @@ export default {
       isHistoryLog.value = false;
 
       // focus on the clicked input
-      inputRefs.value[reference].$el.getElementsByTagName("input")[0].focus();
+      console.log(' inputRefs.value ' +  JSON.stringify(inputRefs.value, null, ' '))
+      inputRefs.value[reference].focus();
     }
 
     // function updateLocalStorage() {
@@ -299,6 +288,11 @@ export default {
   watch: {
     search() {
       if (this.search.length === 0) {
+      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
+      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
+      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
+      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~ inputRefs.value", inputRefs.value)
+      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~ inputRefs.value", inputRefs.value)
         this.hasSearch = false;
       } else {
         this.hasSearch = true;

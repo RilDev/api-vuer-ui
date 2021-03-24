@@ -4,6 +4,11 @@
       type="text"
       :placeholder="placeholder"
       :value="value"
+      :ref="
+            (element) => {
+              inputRefs[reference] = element;
+            }
+          "
       @input="
         $emit('update:value', $event.target.value);
         $emit('getResults', $event.target.value);
@@ -26,7 +31,7 @@
 
 <script>
 export default {
-  props: { value: String, placeholder: String, reference: String },
+  props: { value: String, placeholder: String, reference: String, inputRefs: Object },
   emits: ["clearSearch", "getResults", "update:value"],
 };
 </script>
