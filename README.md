@@ -15,7 +15,7 @@ The friendly robot that searches APIs for you!
 - [x] adjust history design to make is fit no matter the number of logs
 - [x] add tutorial when user has no favorite
 - [x] convert all component to `.vue` single file components
-- [ ] convert components to composition API
+- [x] convert components to composition API
 - [ ] test
 - [ ] vuex
 - [ ] vue router
