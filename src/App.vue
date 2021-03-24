@@ -286,17 +286,18 @@ export default {
 
       // if search is not empty, GET API response
       if (search.value !== "") {
+        isSearching.value = true;
         try {
           // start GET
-          isSearching.value = true;
           const response = await axios.get(
             `https://api.publicapis.org/entries?title=${search.value}`
           );
           // end GET
-          isSearching.value = false;
           results.value = response.data.entries || [];
         } catch {
           console.error("Error! API didn't respond!");
+        } finally {
+          isSearching.value = false;
         }
       } else {
         // if search input is empty, clean all previous results
