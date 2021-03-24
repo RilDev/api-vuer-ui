@@ -22,26 +22,35 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
-  props: { log: Object, index: Number },
+  props: {
+    log: { type: Object, required: true },
+    index: { type: Number, required: true },
+  },
   emits: ["loadHistoryLog", "deleteHistoryLog"],
-  computed: {
-    containerTitle() {
-      return this.log.results.length > 0 ? "Load Log" : "";
-    },
-    classesContainer() {
+  setup(props) {
+    const containerTitle = computed(() => {
+      return props.log.results.length > 0 ? "Load Log" : "";
+    });
+
+    const classesContainer = computed(() => {
       return {
-        "bg-gray-50": this.log.results.length > 0,
-        "hover:bg-gray-100": this.log.results.length > 0,
-        "bg-gray-200": this.log.results.length === 0,
-        "cursor-pointer": this.log.results.length > 0,
+        "bg-gray-50": props.log.results.length > 0,
+        "hover:bg-gray-100": props.log.results.length > 0,
+        "bg-gray-200": props.log.results.length === 0,
+        "cursor-pointer": props.log.results.length > 0,
       };
-    },
-    classesSearch() {
+    });
+
+    const classesSearch = computed(() => {
       return {
-        "line-through": this.log.results.length === 0,
+        "line-through": props.log.results.length === 0,
       };
-    },
+    });
+
+    return { containerTitle, classesContainer, classesSearch };
   },
 };
 </script>
