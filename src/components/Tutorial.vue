@@ -5,7 +5,7 @@
     <slot name="tutorial-1"></slot>
     <div class="text-lg mt-3 mb-3">2) Add an API to your favorites</div>
     <slot name="tutorial-2"></slot>
-    <div class="text-lg -mt-2">
+    <div class="text-lg sm:-mt-2">
       3) Reset the search by clicking on the
       <svg width="24" height="24" viewBox="0 0 24 24" class="inline-block">
         <path
