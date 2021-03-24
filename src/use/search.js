@@ -48,6 +48,7 @@ export default function useSearch() {
   const hasFavorites = ref(false);
   const isSearching = ref(false);
   const isHistoryLog = ref(false);
+  const isSearchDelay = ref(false);
 
   // computed
   const resultsPlaceholder = computed(() => {
@@ -63,12 +64,16 @@ export default function useSearch() {
     if (!hasSearch.value) {
       return "Awaiting search request!";
     }
+    // user is typing
+    if (hasSearch.value && isSearchDelay.value) {
+      return "Listening...";
+    }
     // is searching
     if (hasSearch.value && isSearching.value) {
       return "Searching...";
     }
     // no search results
-    if (hasSearch.value && !hasResults.value) {
+    if (hasSearch.value && !hasResults.value && !isSearchDelay.value) {
       return "No results found!";
     }
     // has search results
@@ -85,6 +90,9 @@ export default function useSearch() {
 
     // reset isHistoryLog
     isHistoryLog.value = false;
+
+    // cancel isSearchDelay
+    isSearchDelay.value = false;
 
     // if search is not empty, GET API response
     if (search.value !== "") {
@@ -181,6 +189,7 @@ export default function useSearch() {
     hasFavorites,
     isSearching,
     isHistoryLog,
+    isSearchDelay,
     // computed
     resultsPlaceholder,
     // methods

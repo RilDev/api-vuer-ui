@@ -22,6 +22,8 @@
           :has-search="hasSearch"
           :has-results="hasResults"
           :is-searching="isSearching"
+          :is-search-delay="isSearchDelay"
+          :is-history-log="isHistoryLog"
         ></RobotIcon>
         <div>{{ resultsPlaceholder }}</div>
       </div>
@@ -48,6 +50,8 @@
           :has-search="hasSearch"
           :has-results="hasResults"
           :is-searching="isSearching"
+          :is-search-delay="isSearchDelay"
+          :is-history-log="isHistoryLog"
         ></RobotIcon>
         <div>{{ resultsPlaceholder }}</div>
       </div>
@@ -176,6 +180,7 @@ export default {
       hasFavorites,
       isSearching,
       isHistoryLog,
+      isSearchDelay,
       // computed
       resultsPlaceholder,
       // methods
@@ -195,6 +200,7 @@ export default {
         hasSearch.value = false;
       } else {
         hasSearch.value = true;
+        isSearchDelay.value = true;
       }
     });
 
@@ -259,6 +265,7 @@ export default {
       hasFavorites,
       isSearching,
       isHistoryLog,
+      isSearchDelay,
       // computed
       resultsPlaceholder,
       // methods
