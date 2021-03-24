@@ -240,26 +240,62 @@ export default {
       isHistoryLog.value = false;
 
       // focus on the clicked input
-      console.log(' inputRefs.value ' +  JSON.stringify(inputRefs.value, null, ' '))
       inputRefs.value[reference].focus();
     }
 
-    // function updateLocalStorage() {
-    //   // update favorite results
-    //   localStorage.setItem(
-    //     "favorite-results",
-    //     JSON.stringify(favoriteResults.value)
-    //   );
+    function removeFromFavorites(index) {
+      // when click on delete, remove corresponding result
+      favoriteResults.value.splice(index, 1);
+      // force state update
+      favoriteResults.value = [...favoriteResults.value];
+    }
 
-    //   // update search history
-    //   // limit the array length to 20 items
-    //   const slicedArray = searchHistory.value.slice(0, 20);
-    //   localStorage.setItem("search-history", JSON.stringify(slicedArray));
-    // }
+    function addToFavorites(index) {
+      // when click on add, add corresponding result to favorites
+      // if index is -1, then it is the tutorial's example
+      if (index === -1) {
+        favoriteResults.value = [tutorialResult];
+        // force state update
+        favoriteResults.value = [...favoriteResults.value];
+      } else {
+        favoriteResults.value = [
+          ...favoriteResults.value,
+          results.value[index],
+        ];
+      }
+    }
 
-    // function timeNow() {
-    //   return moment().format("MMMM Do YYYY, h:mm:ss a");
-    // }
+    function loadHistoryLog(log) {
+      search.value = log.search;
+      results.value = log.results;
+      isHistoryLog.value = true;
+    }
+
+    function deleteHistoryLog(index) {
+      // when click on delete, remove corresponding result
+      // if index = -1, it is the tutorial history log
+      if (index !== -1) {
+        searchHistory.value.splice(index, 1);
+        updateLocalStorage();
+      }
+    }
+
+    function updateLocalStorage() {
+      // update favorite results
+      localStorage.setItem(
+        "favorite-results",
+        JSON.stringify(favoriteResults.value)
+      );
+
+      // update search history
+      // limit the array length to 20 items
+      const slicedArray = searchHistory.value.slice(0, 20);
+      localStorage.setItem("search-history", JSON.stringify(slicedArray));
+    }
+
+    function timeNow() {
+      return moment().format("MMMM Do YYYY, h:mm:ss a");
+    }
 
     return {
       // global refs
@@ -281,18 +317,17 @@ export default {
       // methods
       getResults,
       clearSearch,
-      // updateLocalStorage,
-      // timeNow,
+      removeFromFavorites,
+      addToFavorites,
+      loadHistoryLog,
+      deleteHistoryLog,
+      updateLocalStorage,
+      timeNow,
     };
   },
   watch: {
     search() {
       if (this.search.length === 0) {
-      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
-      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
-      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~  inputRefs.value",  inputRefs.value)
-      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~ inputRefs.value", inputRefs.value)
-      console.log("🚀 ~ file: App.vue ~ line 291 ~ clearSearch ~ inputRefs.value", inputRefs.value)
         this.hasSearch = false;
       } else {
         this.hasSearch = true;
@@ -324,89 +359,6 @@ export default {
       } else {
         this.hasFavorites = true;
       }
-    },
-  },
-  methods: {
-    // getResults: debounce(async function (inputValue) {
-    //   /* debounce to avoid GET at every key stroke */
-    //   // update input search value
-    //   this.search = inputValue;
-
-    //   // reset isHistoryLog
-    //   this.isHistoryLog = false;
-
-    //   // if search is not empty, GET API response
-    //   if (this.search !== "") {
-    //     try {
-    //       // start GET
-    //       this.isSearching = true;
-    //       const response = await axios.get(
-    //         `https://api.publicapis.org/entries?title=${this.search}`
-    //       );
-    //       // end GET
-    //       this.isSearching = false;
-    //       this.results = response.data.entries || [];
-    //     } catch {
-    //       console.error("Error! API didn't respond!");
-    //     }
-    //   } else {
-    //     // if search input is empty, clean all previous results
-    //     this.results = [];
-    //   }
-    // }, 300),
-    // clearSearch(reference) {
-    //   this.search = "";
-    //   this.results = [];
-    //   // reset isHistoryLog
-    //   this.isHistoryLog = false;
-
-    //   // focus on the clicked input
-    //   this.$refs[reference].$el.getElementsByTagName("input")[0].focus();
-    // },
-    removeFromFavorites(index) {
-      // when click on delete, remove corresponding result
-      this.favoriteResults.splice(index, 1);
-      // force state update
-      this.favoriteResults = [...this.favoriteResults];
-    },
-    addToFavorites(index) {
-      // when click on add, add corresponding result to favorites
-      // if index is -1, then it is the tutorial's example
-      if (index === -1) {
-        this.favoriteResults = [this.tutorialResult];
-        // force state update
-        this.favoriteResults = [...this.favoriteResults];
-      } else {
-        this.favoriteResults = [...this.favoriteResults, this.results[index]];
-      }
-    },
-    loadHistoryLog(log) {
-      this.search = log.search;
-      this.results = log.results;
-      this.isHistoryLog = true;
-    },
-    deleteHistoryLog(index) {
-      // when click on delete, remove corresponding result
-      // if index = -1, it is the tutorial history log
-      if (index !== -1) {
-        this.searchHistory.splice(index, 1);
-        this.updateLocalStorage();
-      }
-    },
-    updateLocalStorage() {
-      // update favorite results
-      localStorage.setItem(
-        "favorite-results",
-        JSON.stringify(this.favoriteResults)
-      );
-
-      // update search history
-      // limit the array length to 20 items
-      const slicedArray = this.searchHistory.slice(0, 20);
-      localStorage.setItem("search-history", JSON.stringify(slicedArray));
-    },
-    timeNow() {
-      return moment().format("MMMM Do YYYY, h:mm:ss a");
     },
   },
   computed: {
