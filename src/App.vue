@@ -46,6 +46,7 @@
     </section>
     <section class="overflow-auto">
       <RobotBlock
+        v-if="!hasResults"
         :has-search="hasSearch"
         :has-results="hasResults"
         :is-searching="isSearching"
